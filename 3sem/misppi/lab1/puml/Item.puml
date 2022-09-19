@@ -1,0 +1,10 @@
+@startuml
+class Item {
+    + Name : string <<get>> <<set>>
+    + ShopName : string <<get>> <<set>>
+    + Cost : double <<get>> <<set>>
+    + Amount : double <<get>> <<set>>
+    + Print() : void
+}
+Item --> "Type" SortType
+@enduml

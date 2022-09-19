@@ -1,0 +1,15 @@
+@startuml
+class Mammalia {
+}
+Animal <|-- Mammalia
+class Bird {
+}
+Animal <|-- Bird
+class Artiodactyl {
+}
+Mammalia <|-- Artiodactyl
+class Animal {
+}
+class Program {
+}
+@enduml

@@ -1,0 +1,34 @@
+@startuml
+class Item {
+    + Name : string <<get>> <<set>>
+    + ShopName : string <<get>> <<set>>
+    + Cost : double <<get>> <<set>>
+    + Amount : double <<get>> <<set>>
+    + Print() : void
+}
+Item --> "Type" SortType
+enum SortType {
+    Name,
+    ShopName,
+    Cost,
+    Amount,
+}
+class Information {
+    + Information(items:Item[])
+    + Print() : void
+    + PrintByIndex(index:int) : void
+    + PrintByName(name:string) : void
+    + ThenBySorting(temp_items:IOrderedEnumerable<Item>, thenBy:SortType) : Item[]
+    + SortItemsByName(thenBy:SortType) : Item[]
+    + SortItemsByShopName(thenBy:SortType) : Item[]
+    + SortItemsByCost(thenBy:SortType) : Item[]
+}
+class ShopSum {
+    + ShopName : string <<get>> <<set>>
+    + Sum : double <<get>> <<set>>
+}
+Information +-- ShopSum
+class Program {
+    + {static} Main() : void
+}
+@enduml

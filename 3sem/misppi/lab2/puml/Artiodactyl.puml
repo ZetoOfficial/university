@@ -1,0 +1,5 @@
+@startuml
+class Artiodactyl {
+}
+Mammalia <|-- Artiodactyl
+@enduml
