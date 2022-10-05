@@ -1,4 +1,17 @@
 @startuml
 class Animal {
+    + Name : string <<get>> <<set>>
+    + Speed : double <<get>> <<set>>
+    + SleepTime : int <<get>> <<set>>
+    + IsSleep : bool <<get>> <<set>>
+    + Animal()
+    + Animal(name:string)
+    + Animal(name:string, speed:double)
+    + Animal(name:string, speed:double, sleepTime:int)
+    + Animal(name:string, speed:double, sleepTime:int, isSleep:bool)
+    + <<virtual>> Move() : void
+    + <<virtual>> Sleep() : void
+    + <<virtual>> Print() : void
 }
+Animal --> "SleepAt" DateTime
 @enduml

@@ -1,5 +1,17 @@
 @startuml
 class Bird {
+    + CanFly : bool <<get>> <<set>>
+    + Bird()
+    + Bird(canFly:bool)
+    + Bird(canFly:bool, name:string)
+    + Bird(canFly:bool, name:string, speed:double)
+    + Bird(canFly:bool, name:string, speed:double, sleepTime:int, isSleep:bool)
+    + Bird(name:string)
+    + Bird(name:string, speed:double)
+    + Bird(name:string, speed:double, sleepTime:int)
+    + Bird(name:string, speed:double, sleepTime:int, isSleep:bool)
+    + <<override>> Move() : void
+    + <<override>> Print() : void
 }
 Animal <|-- Bird
 @enduml

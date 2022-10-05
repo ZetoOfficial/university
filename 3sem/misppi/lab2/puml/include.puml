@@ -1,15 +1,70 @@
 @startuml
 class Mammalia {
+    + sex : bool = true
+    + MammaTime : int <<get>> <<set>>
+    + Sex : bool <<get>> <<set>>
+    + Mammalia()
+    + Mammalia(sex:bool)
+    + Mammalia(sex:bool, name:string)
+    + Mammalia(sex:bool, name:string, speed:double)
+    + Mammalia(sex:bool, name:string, speed:double, sleepTime:int, isSleep:bool)
+    + Mammalia(name:string)
+    + Mammalia(name:string, speed:double)
+    + Mammalia(name:string, speed:double, sleepTime:int)
+    + Mammalia(name:string, speed:double, sleepTime:int, isSleep:bool)
+    + Mamma() : void
+    + <<override>> Print() : void
 }
 Animal <|-- Mammalia
 class Bird {
+    + CanFly : bool <<get>> <<set>>
+    + Bird()
+    + Bird(canFly:bool)
+    + Bird(canFly:bool, name:string)
+    + Bird(canFly:bool, name:string, speed:double)
+    + Bird(canFly:bool, name:string, speed:double, sleepTime:int, isSleep:bool)
+    + Bird(name:string)
+    + Bird(name:string, speed:double)
+    + Bird(name:string, speed:double, sleepTime:int)
+    + Bird(name:string, speed:double, sleepTime:int, isSleep:bool)
+    + <<override>> Move() : void
+    + <<override>> Print() : void
 }
 Animal <|-- Bird
 class Artiodactyl {
+    + HoofCount : int <<get>> <<set>>
+    + Artiodactyl()
+    + Artiodactyl(hoofCount:int)
+    + Artiodactyl(hoofCount:int, name:string)
+    + Artiodactyl(hoofCount:int, name:string, speed:double)
+    + Artiodactyl(hoofCount:int, name:string, speed:double, sleepTime:int, isSleep:bool)
+    + Artiodactyl(name:string)
+    + Artiodactyl(name:string, speed:double)
+    + Artiodactyl(name:string, speed:double, sleepTime:int)
+    + Artiodactyl(name:string, speed:double, sleepTime:int, isSleep:bool)
+    + <<override>> Move() : void
+    + <<override>> Print() : void
 }
 Mammalia <|-- Artiodactyl
 class Animal {
+    + Name : string <<get>> <<set>>
+    + Speed : double <<get>> <<set>>
+    + SleepTime : int <<get>> <<set>>
+    + IsSleep : bool <<get>> <<set>>
+    + Animal()
+    + Animal(name:string)
+    + Animal(name:string, speed:double)
+    + Animal(name:string, speed:double, sleepTime:int)
+    + Animal(name:string, speed:double, sleepTime:int, isSleep:bool)
+    + <<virtual>> Move() : void
+    + <<virtual>> Sleep() : void
+    + <<virtual>> Print() : void
 }
+Animal --> "SleepAt" DateTime
 class Program {
+    + {static} SearchByCanFly(animals:List<Animal>) : List<Animal>
+    + {static} SearchByCanMammal(animals:List<Animal>) : List<Animal>
+    + {static} SearchByHoof(animals:List<Animal>) : List<Animal>
+    + {static} Main() : void
 }
 @enduml

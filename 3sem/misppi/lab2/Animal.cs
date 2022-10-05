@@ -1,15 +1,15 @@
 namespace lab2;
 class Animal
 {
-    private string info = "animal example inf";
+    private string name = "animal name";
     private double speed = 1.0;
     private DateTime sleepAt;
     private int sleepTime = 1;
     private bool isSleep = false;
 
-    public string Info
+    public string Name
     {
-        get => info; set => info = value;
+        get => name; set => name = value;
     }
 
     public double Speed
@@ -34,19 +34,40 @@ class Animal
 
     public Animal()
     {
-        Info = "animal example information";
+        Name = "animal example information";
         Speed = 1.0;
         SleepTime = 480; // time in minutes
         IsSleep = false;
     }
-    public Animal(string textInfo, double speed, int sleepTime = 480, bool isSleep = false)
+    public Animal(string name)
     {
-        Info = textInfo;
+        Name = name;
+        Speed = 1.0;
+        SleepTime = 480;
+        IsSleep = false;
+    }
+    public Animal(string name, double speed)
+    {
+        Name = name;
+        Speed = speed;
+        SleepTime = 480;
+        IsSleep = false;
+    }
+    public Animal(string name, double speed, int sleepTime)
+    {
+        Name = name;
+        Speed = speed;
+        SleepTime = sleepTime;
+        IsSleep = false;
+    }
+    public Animal(string name, double speed, int sleepTime, bool isSleep)
+    {
+        Name = name;
         Speed = speed;
         SleepTime = sleepTime;
         IsSleep = isSleep;
     }
-    public void Move() => Console.WriteLine("We move");
-    public void Sleep() => IsSleep = !IsSleep;
-    public void Print() => Console.WriteLine($"Info {Info}\nSpeed: {Speed}\nSleep Time: {SleepTime}\nSleep: {IsSleep}");
+    public virtual void Move() => Console.WriteLine("We move");
+    public virtual void Sleep() => IsSleep = !IsSleep;
+    public virtual void Print() => Console.WriteLine($"=======\nName {Name}\n=======\nSpeed: {Speed}\nSleep Time: {SleepTime}\nSleep: {IsSleep}");
 }

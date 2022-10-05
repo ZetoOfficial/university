@@ -1,5 +1,19 @@
 @startuml
 class Mammalia {
+    + sex : bool = true
+    + MammaTime : int <<get>> <<set>>
+    + Sex : bool <<get>> <<set>>
+    + Mammalia()
+    + Mammalia(sex:bool)
+    + Mammalia(sex:bool, name:string)
+    + Mammalia(sex:bool, name:string, speed:double)
+    + Mammalia(sex:bool, name:string, speed:double, sleepTime:int, isSleep:bool)
+    + Mammalia(name:string)
+    + Mammalia(name:string, speed:double)
+    + Mammalia(name:string, speed:double, sleepTime:int)
+    + Mammalia(name:string, speed:double, sleepTime:int, isSleep:bool)
+    + Mamma() : void
+    + <<override>> Print() : void
 }
 Animal <|-- Mammalia
 @enduml
