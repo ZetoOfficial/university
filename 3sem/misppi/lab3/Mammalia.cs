@@ -23,12 +23,12 @@ class Mammalia : Animal
     public Mammalia(string name, double speed, int sleepTime) : base(name, speed, sleepTime) { }
     public Mammalia(string name, double speed, int sleepTime, bool isSleep) : base(name, speed, sleepTime, isSleep) { }
 
-    public void Mamma() => Console.WriteLine("рожаем)");
+    public virtual void Mamma() => Console.WriteLine("рожаем)");
     public override void Sleep() => Console.WriteLine("Спим как млекопитающий)))");
     public override void Move() => Console.WriteLine("RUN");
     public override string ToString()
     {
         var sex = Sex ? "М" : "Ж";
-        return $"Mamma Time: {MammaTime}\nПол: {sex}";
+        return $"|Mammalia|\nMamma Time: {MammaTime}\nПол: {sex}";
     }
 }

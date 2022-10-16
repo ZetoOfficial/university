@@ -1,5 +1,5 @@
 namespace lab3;
-class Artiodactyl : Mammalia
+class Artiodactyl : Mammalia, Road
 {
     private int hoofCount = 4;
     public int HoofCount { get => hoofCount; set => hoofCount = value; }
@@ -15,7 +15,9 @@ class Artiodactyl : Mammalia
     public Artiodactyl(string name, double speed, int sleepTime) : base(name, speed, sleepTime) { }
     public Artiodactyl(string name, double speed, int sleepTime, bool isSleep) : base(name, speed, sleepTime, isSleep) { }
 
+    void Road.Go() => Console.WriteLine("топ-топ копытами делаем");
+    public override void Mamma() => Console.WriteLine("Рожаем как парнокопытное.");
     public override void Move() => Console.WriteLine("Скок-скок-скок");
     public override void Sleep() => Console.WriteLine("Спим как млекопитающий)))");
-    public override string ToString() => $"Hoof Count: {HoofCount}";
+    public override string ToString() => $"|Artiodactyl|\nHoof Count: {HoofCount}";
 }

@@ -1,4 +1,5 @@
 ﻿namespace lab3;
+delegate void Message();
 class Program
 {
     public static List<Animal> SearchByCanFly(List<Animal> animals)
@@ -21,24 +22,35 @@ class Program
             new Bird(name: "Пингвин)", canFly: false), new Mammalia(sex: true, name: "Blue Kit"), new Artiodactyl(hoofCount: 4, name: "Jiraf")
         };
 
+        Bird pin = new Bird(name: "Пин)", canFly: false);
+
+        Console.WriteLine("--> Delegate demo <--");
+        Message mes;
+        mes = pin.Move;
+        mes += pin.Sleep;
+        mes();
+
+        Console.WriteLine("\n--> Print all animals <--");
         foreach (Animal animal in animals)
         {
             animal.Print();
         }
 
-
+        Console.WriteLine("\n--> Print CanFly <--");
         var birds = SearchByCanFly(animals);
         foreach (Animal animal in birds)
         {
             animal.Print();
         }
 
+        Console.WriteLine("\n--> Print CanMammal <--");
         var mammals = SearchByCanMammal(animals);
         foreach (Animal animal in mammals)
         {
             animal.Print();
         }
 
+        Console.WriteLine("\n--> Print ByHoof <--");
         var actios = SearchByHoof(animals);
         foreach (Animal animal in actios)
         {
