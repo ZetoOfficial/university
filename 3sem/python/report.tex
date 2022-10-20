@@ -1,0 +1,494 @@
+\documentclass[a4paper,12pt]{article} %размер бумаги устанавливаем А4, шрифт 12пунктов
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}%используем русский и английский языки с переносами
+\usepackage[dvips]{graphicx} %вставка графики
+\usepackage{pythonhighlight}
+\usepackage{indentfirst}
+\usepackage{geometry} % Меняем поля страницы
+\usepackage{hyperref}
+\usepackage{csquotes}
+
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+\geometry{left=2cm}% левое поле
+\geometry{right=2cm}% правое поле
+\geometry{top=1cm}% верхнее поле
+\geometry{bottom=2cm}% нижнее поле
+
+\addto\captionsrussian{
+	\renewcommand{\partname}{Глава}
+	\renewcommand{\contentsname}{\centerline{Содержание}}
+}
+
+\begin{document}
+
+\begin{titlepage}
+
+    \begin{center}
+        \large МИНИСТЕРСТВО НАУКИ И ВЫСШЕГО ОБРАЗОВАНИЯ РОССИЙСКОЙ ФЕДЕРАЦИИ \\
+        \large «ТЮМЕНСКИЙ ГОСУДАРСТВЕННЫЙ УНИВЕРСТИТЕТ» \\
+        \large ФИНАНСОВО-ЭКОНОМИЧЕСКИЙ ИНСТИТУТ \\[6cm]
+        
+        \large ОТЧЕТ ПО ИНДИВИДУАЛЬНОЙ РАБОТЕ \\[0.5cm]
+        \large НА ТЕМУ «Парсинг информации о студентах» \\[5.1cm]
+    \end{center}
+
+    \begin{flushright} % выравнивание по правому краю
+        \begin{minipage}{0.40\textwidth} % врезка в половину ширины текста
+            \begin{flushleft} % выровнять её содержимое по левому краю
+
+                \large \textbf{Работу выполнил:}\\
+                \large Титов Павел Сергеевич \\
+                \large {Группа:} ЛБ-01 \\
+
+                \large \textbf{Преподаватель:}\\
+                \large Актаев Нуркен Ерболатович
+
+            \end{flushleft}
+        \end{minipage}
+    \end{flushright}
+
+    \vfill
+
+    \begin{center}
+        \large Тюмень, \the\year
+    \end{center}
+
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section*{Постановка задачи}
+\addcontentsline{toc}{section}{Постановка задачи}
+Реализовать парсер студентов ТюмГУ и выгрузку полученных данных в csv для анализа среднего балла и формы обучения.\\
+Результат: .csv файл со списком студентов. \\
+У каждого студента выделены следующие поля: 
+\begin{enumerate}
+    \item Уровень образования (Бакалавр/Магистр)
+    \item Код специальности
+    \item ФИО
+    \item Рейтинг (Средний балл)
+    \item Год поступления
+\end{enumerate}
+\newpage
+
+\section{Листинг кода работы с парсером и выгрузки}
+
+\textbf{Импорты}\\
+Для обработки данных, их необходимо:
+\begin{enumerate}
+    \item Получить (UtmnParser)
+    \item Обработать (json - Для выгрузки, кеширования и прочего, pydantic - для создания модели студента, tqdm - красивый progress bar)
+    \item Сохранить/Выгрузить (csv)
+\end{enumerate}
+
+\begin{python}
+import csv
+import json
+
+from pydantic import BaseModel
+from tqdm import tqdm
+
+from app.utmn_parser import UtmnParser
+from settings import getLogger, settings
+\end{python}
+
+\textbf{Логгирование} \\
+Инициализируем в начале файла логгер, чтобы в логах было понятно где выброшено исключение:
+\begin{python}
+logger = getLogger(__name__)
+\end{python}
+
+\textbf{Исключения} \\
+Собственные классы ошибок позволят точнее определять, что пошло не так. 
+\begin{python}
+class InvalidUsername(Exception):
+    pass
+
+
+class StudentNotFound(Exception):
+    pass
+\end{python}
+
+
+\textbf{Модели} \\
+Модель студента для удобного представления данных:
+\begin{python}
+class Student(BaseModel):
+    education_level: str
+    specialty_code: str
+    entered: int
+    fio: str
+    rating: float
+    entered_upon: str
+\end{python}
+
+
+\textbf{Валидация} \\
+Валидация позволит исключить студентов, не имеющих важные для сбора информации поля.
+\begin{python}
+def validate_student(student: dict, cached_students: dict):
+    username = student['username']
+    if username is None:
+        raise InvalidUsername
+
+    student_info = cached_students[username]
+    if student_info is None:
+        raise StudentNotFound
+\end{python}
+
+
+\textbf{Получение нужной информации о студентах} \\
+Получение информации делится на несколько этапов: 
+\begin{enumerate}
+    \item Валидация
+    \item Получение первичной информации
+    \item Получение более подробной информации (данные из зачётной книжки)
+    \item Компоновка данных в модель
+\end{enumerate}
+\begin{python}
+def get_students_information(students: list, cached_students: dict):
+    for student in students:
+        try:
+            validate_student(student, cached_students)
+        except InvalidUsername:
+            logger.error(f'{student} have invalid username')
+            continue
+        except StudentNotFound:
+            logger.error(f'{student} not found')
+            continue
+
+        username: str = student['username']
+        fio: str = student['displayName']
+        student_info = cached_students[username]
+
+        rating: float = 0.00
+        entered_upon: str = 'No info'
+        entered: int = student_info['main'].get('entered')
+        specialty_code: str = student_info['main'].get('specialtyCode')
+        education_level: str = student_info['main'].get('educationLevel')
+
+        for studbook in student_info['studbooks']:
+            if not studbook.get('active'):
+                continue
+            rating = student_info.get('rating').get('progress')
+            if isinstance(rating, dict):
+                rating = rating.get(student_info['defaultStudbook'], 0.00)
+            entered_upon = studbook.get('enteredUpon')
+
+        yield Student(
+            education_level=education_level,
+            specialty_code=specialty_code,
+            entered=entered,
+            fio=fio,
+            rating=round(float(rating), 2),
+            entered_upon=entered_upon,
+        )
+\end{python}
+
+
+\textbf{Кэширование данных} \\
+Чтобы каждый раз не запрашивать подробную информацию о студенте, создадим функцию сохранения. \\
+Принцип работы следующий: 
+\begin{enumerate}
+    \item Получение уже сохранённой информации
+    \item \enquote{Пробег} по всем студентам (с общей информацией)
+    \item Сохранение, если подробных данных нет 
+    \item Возврат сохранённых студентов
+\end{enumerate}
+\begin{python}
+def cache_students(up: UtmnParser, students: list) -> dict:
+    with open('cached_students.json', 'r', encoding='utf8') as f:
+        cached_students = json.load(f)
+
+    students_bar = tqdm(desc='Collecting student data', total=len(students))
+    for student in students:
+        username = student.get('username')
+        if not cached_students.get(username):
+            student_info = up.get_student(username).get('response')
+            cached_students.update({username: student_info})
+            with open('cached_students.json', 'w', encoding='utf8') as f:
+                json.dump(cached_students, f, ensure_ascii=False)
+        students_bar.update(1)
+    students_bar.close()
+
+    return cached_students
+\end{python}
+
+
+\textbf{Главная функция} \\
+Собираем всё воедино:
+\begin{enumerate}
+    \item Создание экземпляра парсера
+    \item Получение общей информации о студентах направления
+    \item Получение подробной информации о студентах (из кэша, например)
+    \item Сортировка + выгрузка данных в файл 
+\end{enumerate}
+\begin{python}
+def main(study_plan: str, qualification: str, entered: int):
+    up = UtmnParser(settings.app.usernameOrEmail, settings.app.password)
+
+    students = up.get_all_students_by_study_plan(
+        study_plan=study_plan,
+        qualification=qualification,
+        entered=entered,
+    )
+
+    cached_students = cache_students(up, students)
+
+    students = sorted(
+        get_students_information(students, cached_students),
+        key=lambda student: (
+            student.rating,
+            student.education_level,
+            student.specialty_code,
+            student.entered,
+        ),
+        reverse=True,
+    )
+    fieldnames = list(Student.__fields__.keys())
+    with open('students.csv', 'w') as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        for student in students:
+            writer.writerow(student.dict())
+\end{python}
+
+\textbf{Запуск}
+\begin{python}
+if __name__ == '__main__':
+    study_plan = 'students plan ...'
+    qualification = 'qualification level ...'
+    entered = 2021
+    main(study_plan, qualification, entered)
+    
+\end{python}
+
+\newpage
+
+\section{Листинг кода парсера}
+\textbf{Импорты}
+\begin{enumerate}
+    \item urlencode - Форматировать параметров для отправки
+    \item requests - Для запросов к api
+\end{enumerate}
+\begin{python}
+import json
+from urllib.parse import urlencode
+
+import requests
+from settings import getLogger
+from tqdm import tqdm
+\end{python}
+
+
+\textbf{Логгер}
+\begin{python}
+logger = getLogger(__name__)
+\end{python}
+
+
+\textbf{Исключения}
+\begin{python}
+class InvalidTokenException(Exception):
+    pass
+\end{python}
+
+
+\textbf{Создания класса парсера}\\
+В headers прописывается Content-Type для получения ответа в json формате, и User-Agent для доступа к api.\\
+В init методе производится авторизация.
+\begin{python}
+class UtmnParser:
+    _api_url: str = 'https://nova.utmn.ru/api/v1'
+    _headers: dict = {
+        'Content-Type': 'application/json',
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36',
+    }
+
+    def __init__(self, username: str, password: str) -> None:
+        self._headers.update({'Authorization': self._get_token(username, password)})
+\end{python}
+
+
+\textbf{Метод получения токена для авторизации} \\
+Метод авторизации работает следующим образом:
+\begin{enumerate}
+    \item Формирование данных для отправки (логин+пароль)
+    \item Отправка запроса на авторизацию
+    \item Получение токена
+\end{enumerate}
+\begin{python}
+    def _get_token(self, username: str, password: str) -> str:
+        '''Getting token by username and password
+
+        Args:
+            username (str): Username or e-mail
+            password (str): Password
+
+        Raises:
+            InvalidTokenException: Authorization data is not valid
+
+        Returns:
+            str: Received token
+        '''
+        payload = json.dumps({'usernameOrEmail': username, 'password': password})
+        resp = requests.post(
+            f'{self._api_url}/auth/signin', headers=self._headers, data=payload
+        )
+        resp = resp.json().get('response')
+        if token := resp.get('token'):
+            return token
+        raise InvalidTokenException()
+\end{python}
+
+\textbf{Метод получения всех студентов направления} \\
+Получение делится на два этапа:
+\begin{enumerate}
+    \item Отправка запроса для получения информации о кол-ве студентов и страниц.
+    \item Отправка запроса для получения всех студентов 
+\end{enumerate}
+Далее просто сбор полученных данных.
+\begin{python}
+    def get_all_students_by_study_plan(
+        self,
+        study_plan: str,
+        qualification: str,
+        entered: int,
+    ) -> list:
+        '''Getting all students of a given direction
+
+        Args:
+            study_plan (str): Full name of the study plan
+            qualification (str): Qualification level
+            entered (int, optional): Entered Year. The default is 2021.
+
+        Returns:
+            dict: query result
+        '''
+        params = {
+            'limit': 1,
+            'searchRole': 'student',
+            'entered': entered,
+            'studyPlan': study_plan,
+            'offset': 0,
+            'qualification': qualification,
+        }
+        limit = 20
+        resp = requests.get(
+            f'{self._api_url}/users?{urlencode(params)}', headers=self._headers
+        ).json()
+        total = resp.get('response').get('total')
+
+        all_students = [*resp.get('response').get('users')]
+        params['limit'] = limit
+        students_bar = tqdm(desc='Collecting primary data on students', total=total)
+
+        for offset in range(1, total + 1, limit):
+            params['offset'] = offset
+            resp = requests.get(
+                f'{self._api_url}/users?{urlencode(params)}', headers=self._headers
+            ).json()
+            logger.debug(resp)
+            all_students += resp.get('response').get('users')
+            students_bar.update(limit)
+        students_bar.close()
+
+        return all_students
+\end{python}
+
+\textbf{Метод получения подробной информации} \\
+Поскольку метод на получение информации о студентах направления возвращает общую информацию, необходимо запросить подробную информацию отдельным методом.
+\begin{python}
+    def get_student(self, username: str) -> dict:
+        '''Getting detailed information about the student
+
+        Args:
+            username (str): student username on vmeste
+
+        Returns:
+            dict: query result
+        '''
+        return requests.get(
+            f'{self._api_url}/users/username/{username}', headers=self._headers
+        ).json()
+\end{python}
+
+\section{Листинг кода настроек}
+
+\textbf{Настройки приложения:} \\
+Логгирование, Модель настроек (данные для авторизации)
+\begin{python}
+from logging import INFO, FileHandler, StreamHandler, basicConfig, getLogger
+from pathlib import Path
+
+from pydantic import BaseModel, BaseSettings
+from yaml import SafeLoader, load
+
+CONFIG_FILE = str(Path(__file__).parent.absolute()) + '/settings.yaml'
+LOGFILE_FILE = str(Path(__file__).parent.absolute()) + '/utmn.log'
+basicConfig(
+    level=INFO,
+    format='[%(asctime)s] [%(levelname)s] [%(name)s] [%(funcName)s():%(lineno)s] %(message)s',
+    handlers=[FileHandler(LOGFILE_FILE), StreamHandler()],
+)
+with open(CONFIG_FILE, 'r') as f:
+    cfg = load(f, SafeLoader)
+
+
+class App(BaseModel):
+    usernameOrEmail: str
+    password: str
+
+
+class Settings(BaseSettings):
+    app: App
+
+
+settings = Settings.parse_obj(cfg)
+\end{python}
+
+\section{Файлы настроек и зависимостей}
+
+\textbf{Файл конфигурации}
+\begin{python}
+app:
+  usernameOrEmail: ''
+  password: ''
+\end{python}
+\textbf{Файл с зависимостями для poetry}
+\begin{python}
+python = '^3.10'
+flake8 = '^5.0.4'
+pydantic = '^1.9.1'
+pyyaml = '^6.0'
+requests = '^2.28.1'
+tqdm = '^4.64.0'
+\end{python}
+\newpage
+
+\section*{Результат}
+\addcontentsline{toc}{section}{Результат}
+
+В результате получаем .csv файл с интересующей нас информацией:
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{|l|l|l|l|l|l|}
+    \hline
+        education\_level & specialty\_code & entered & fio & rating & entered\_upon \\ \hline
+        Бакалавр & 02.03.03 & 2021 & student fio & 5.0 & Бюджетная основа \\ \hline
+        Бакалавр & 02.03.03 & 2021 & student fio & 4.71 & Бюджетная основа \\ \hline
+        Бакалавр & 02.03.03 & 2021 & student fio & 4.14 & Бюджетная основа \\ \hline
+        Бакалавр & 02.03.03 & 2021 & student fio & 3.29 & Полное возмещение затрат \\ \hline
+        Бакалавр & 02.03.03 & 2021 & student fio & 0.0 & No info \\ \hline
+    \end{tabular}
+\end{table}
+
+\end{document}
