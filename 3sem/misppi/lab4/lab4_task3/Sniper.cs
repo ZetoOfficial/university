@@ -40,7 +40,6 @@
         public ResultPoints GetResults()
         {
             ResultPoints result = new ResultPoints();
-            if (ShotsPoints < 10) return result;
             result.Center = Center;
             result.Trying = AllTries;
             return result;
@@ -51,7 +50,7 @@
             return Math.Sqrt(Math.Pow(one.X - two.X, 2) + Math.Pow(one.Y - two.Y, 2));
         }
 
-        public void Shot(Point trajectory)
+        public int Shot(Point trajectory)
         {
             double length = GetLength(Center, trajectory);
             length /= 30;
@@ -61,15 +60,15 @@
             if ((Int32)length == 0)
             {
                 ShotsPoints += 10;
+                return 10;
             }
             else if (length <= 10)
             {
                 ShotsPoints += 10 - (Int32)length;
+                return 10 - (Int32)length;
             }
-            else if (length > 10)
-            {
-                ShotsPoints = 0;
-            }
+            ShotsPoints = 0;
+            return 0;
         }
     }
 }

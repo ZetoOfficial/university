@@ -1,7 +1,3 @@
-using System.Security.Policy;
-using System.Windows.Forms;
-using System.Xml.Linq;
-
 namespace lab4_task3
 {
     public partial class SniperGameForm : Form
@@ -13,7 +9,7 @@ namespace lab4_task3
         {
             InitializeComponent();
             defaultFormMessage = this.Text;
-            Game = new Sniper(this.Size.Width, this.Size.Height, padding: 30);
+            Game = new Sniper(this.Size.Width, this.Size.Height);
             StatsUpdate();
         }
         private void StatsUpdate()
@@ -23,7 +19,6 @@ namespace lab4_task3
         private void ShowTarget()
         {
             ResultPoints results = Game.GetResults();
-            
             foreach (var playerShot in results.Trying)
             {
                 this.Controls.Add(new Label { Text = "X", Location = playerShot, AutoSize = true });
@@ -33,12 +28,21 @@ namespace lab4_task3
         }
         private void SniperGameForm_MouseClick(object sender, MouseEventArgs e)
         {
-            Game.Shot(e.Location);
+            int points = Game.Shot(e.Location);
+            ShowTarget();
             StatsUpdate();
-            if (Game.ShotsPoints >= 10)
+            if (Game.ShotsCount == 10)
             {
-                ShowTarget();
-                MessageBox.Show($"Вы набрали {Game.ShotsPoints}/10 очков за {Game.ShotsCount} выстрела(ов)!", "Победа!");
+                // ShowTarget();
+                MessageBox.Show($"Вы набрали {Game.ShotsPoints} очков за {Game.ShotsCount} выстрелов!", "Игра закончена!");
+                Game.RestartGame();
+                StatsUpdate();
+                this.Controls.Clear();
+            }
+            if (points == 10)
+            {
+                // ShowTarget();
+                MessageBox.Show($"Вы набрали попали в десятку с {Game.ShotsCount} выстрела!", "Победа!");
                 Game.RestartGame();
                 StatsUpdate();
                 this.Controls.Clear();

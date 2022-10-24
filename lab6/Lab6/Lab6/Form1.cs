@@ -5,6 +5,8 @@ namespace Lab6
     public partial class Form1 : Form
     {
         public QuadraticEquation quadraticEquation = new QuadraticEquation();
+        public BiquadraticEquation biquadraticEquation = new BiquadraticEquation();
+
         public string DefaultFormText { get; set; }
         public bool IsChangeColorActive { get; set; }
 
@@ -104,34 +106,57 @@ namespace Lab6
         }
         private bool validateInput(string text, char newChar)
         {
-            /*
-            можно вводить только действительные числа
-            все остальные символы должны игнорироваться, т.ч. вторая и последующие запятые минус на втором и последующих местах
-            123123,123123123123
-            123123123/123123123
-             */
-            var allowSigns = new List<Char>() { '.', '/' };
-            int allowCharCount = text.Where(el => el == newChar).ToArray().Length;
-            
-            if (!Char.IsDigit(newChar) && !allowSigns.Contains(newChar) && allowCharCount > 1) return true;
-            if (!Char.IsDigit(newChar)) return true;
+            var allowSigns = new List<Char>() { '.', '/', '-' };
+            int charCount = text.Where(e1 => allowSigns.Contains(e1)).ToArray().Length;
+
+            var backSpace = (char)8;
+            var maxAllowSignsCountInText = 2;
+            if (newChar == backSpace || Char.IsDigit(newChar) || !Char.IsDigit(newChar) && allowSigns.Contains(newChar) && charCount < maxAllowSignsCountInText) return true;
             return false;
         }
         
         private void AInput_KeyPress(object sender, KeyPressEventArgs e)
         {
-            char number = e.KeyChar;
-            e.Handled = validateInput(AInput.Text, number);
-            if (!validateInput(AInput.Text, number))
-            {
-                AnswerLabel.Text = AInput.Text + number;
-                //quadraticEquation.A = Convert.ToDouble(AInput.Text);
-            }
+            char newChar = e.KeyChar;
+            e.Handled = !validateInput(AInput.Text, newChar);
         }
 
-        private void CalcKva_Click(object sender, EventArgs e)
+        private void BInput_KeyPress(object sender, KeyPressEventArgs e)
         {
+            char newChar = e.KeyChar;
+            e.Handled = !validateInput(BInput.Text, newChar);
+        }
+
+        private void CInput_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char newChar = e.KeyChar;
+            e.Handled = !validateInput(CInput.Text, newChar);
+        }
+        private bool ValidateBoxes()
+        {
+            if (AInput.Text == "" || BInput.Text == "" || CInput.Text == "")
+            {
+                MessageBox.Show("Введите a/b/c", "Ошибка");
+                return false;
+            }
+            return true;
+        }
+        private void CalcQuadraticEquation_Click(object sender, EventArgs e)
+        {
+            if (!ValidateBoxes()) return;
+            quadraticEquation.A = Convert.ToDouble(AInput.Text);
+            quadraticEquation.B = Convert.ToDouble(BInput.Text);
+            quadraticEquation.C = Convert.ToDouble(CInput.Text);
             AnswerLabel.Text = quadraticEquation.Solve();
+        }
+
+        private void CalcBiquadraticEquation_Click(object sender, EventArgs e)
+        {
+            if (!ValidateBoxes()) return;
+            biquadraticEquation.A = Convert.ToDouble(AInput.Text);
+            biquadraticEquation.B = Convert.ToDouble(BInput.Text);
+            biquadraticEquation.C = Convert.ToDouble(CInput.Text);
+            AnswerLabel.Text = biquadraticEquation.Solve();
         }
     }
 }
