@@ -1,0 +1,21 @@
+@startuml
+class Artiodactyl {
+    + HoofCount : int <<get>> <<set>>
+    + Artiodactyl()
+    + Artiodactyl(hoofCount:int)
+    + Artiodactyl(hoofCount:int, name:string)
+    + Artiodactyl(hoofCount:int, name:string, speed:double)
+    + Artiodactyl(hoofCount:int, name:string, speed:double, sleepTime:int, isSleep:bool)
+    + Artiodactyl(name:string)
+    + Artiodactyl(name:string, speed:double)
+    + Artiodactyl(name:string, speed:double, sleepTime:int)
+    + Artiodactyl(name:string, speed:double, sleepTime:int, isSleep:bool)
+    Go() : void
+    + <<override>> Mamma() : void
+    + <<override>> Move() : void
+    + <<override>> Sleep() : void
+    + <<override>> ToString() : string
+}
+Mammalia <|-- Artiodactyl
+Road <|-- Artiodactyl
+@enduml

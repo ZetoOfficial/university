@@ -1,0 +1,8 @@
+@startuml
+class Program {
+    + {static} SearchByCanFly(animals:List<Animal>) : List<Animal>
+    + {static} SearchByCanMammal(animals:List<Animal>) : List<Animal>
+    + {static} SearchByHoof(animals:List<Animal>) : List<Animal>
+    + {static} Main() : void
+}
+@enduml

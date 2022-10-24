@@ -1,0 +1,8 @@
+@startuml
+interface Road {
+    Go() : void
+}
+interface Sky {
+    Go() : void
+}
+@enduml
