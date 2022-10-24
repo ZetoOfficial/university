@@ -106,12 +106,12 @@ namespace Lab6
         }
         private bool validateInput(string text, char newChar)
         {
-            var allowSigns = new List<Char>() { '.', '/', '-' };
+            var allowSigns = new List<Char>() { '.' };
             int charCount = text.Where(e1 => allowSigns.Contains(e1)).ToArray().Length;
 
             var backSpace = (char)8;
-            var maxAllowSignsCountInText = 2;
-            if (newChar == backSpace || Char.IsDigit(newChar) || !Char.IsDigit(newChar) && allowSigns.Contains(newChar) && charCount < maxAllowSignsCountInText) return true;
+            var maxAllowSignsCountInText = 1;
+            if (newChar == backSpace || Char.IsDigit(newChar) || !Char.IsDigit(newChar) && text.Length == 0 && newChar == '-' || !Char.IsDigit(newChar) && allowSigns.Contains(newChar) && charCount < maxAllowSignsCountInText) return true;
             return false;
         }
         
