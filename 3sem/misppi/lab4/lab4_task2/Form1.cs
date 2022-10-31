@@ -20,7 +20,7 @@ namespace lab4_task2
 
         private void Green_Click(object sender, EventArgs e)
         {
-            ActiveForm.BackColor = Color.FromArgb(0, 0, 255);
+            ActiveForm.BackColor = Color.FromArgb(0, 255, 0);
         }
 
         private void SecondForm_MouseClick(object sender, MouseEventArgs e)
