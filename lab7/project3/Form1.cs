@@ -4,50 +4,25 @@ using LINQtoCSV;
 
 class Student
 {
-    [CsvColumn(Name = "№")]
     public int StudNumber { get; set; }
-    [CsvColumn(Name = "ФИО студента")]
     public string StudFIO { get; set; }
-    [CsvColumn(Name = "1 работа")]
-    public int Work1 { get; set; }
-    [CsvColumn(Name = "2 работа")]
-    public int Work2 { get; set; }
-    [CsvColumn(Name = "3 работа")]
-    public int Work3 { get; set; }
-    [CsvColumn(Name = "4 работа")]
-    public int Work4 { get; set; }
-    [CsvColumn(Name = "5 работа")]
-    public int Work5 { get; set; }
-    [CsvColumn(Name = "6 работа")]
-    public int Work6 { get; set; }
-    [CsvColumn(Name = "7 работа")]
-    public int Work7 { get; set; }
-    [CsvColumn(Name = "8 работа")]
-    public int Work8 { get; set; }
-    [CsvColumn(Name = "9 работа")]
-    public int Work9 { get; set; }
-    [CsvColumn(Name = "10 работа")]
-    public int Work10 { get; set; }
-    [CsvColumn(Name = "11 работа")]
-    public int Work11 { get; set; }
-    [CsvColumn(Name = "12 работа")]
-    public int Work12 { get; set; }
-    [CsvColumn(Name = "13 работа")]
-    public int Work13 { get; set; }
-    [CsvColumn(Name = "14 работа")]
-    public int Work14 { get; set; }
-    [CsvColumn(Name = "Бонус")]
-    public int Bonus { get; set; }
+    public int[] Score { get; set; }
+
+    public Student(int studNumber, string studFIO, int[] score)
+    {
+        StudNumber = studNumber;
+        StudFIO = studFIO;
+        Score = score;
+    }
 }
 
 class StudentResult : Student
 {
-    [CsvColumn(Name = "Результат")]
     public double Result { get; set; }
 
-    public StudentResult(int StudNumber, string StudFIO, int Work1, double result) : base()
+    public StudentResult(int studNumber, string studFIO, int[] score, double result) : base(studNumber, studFIO, score)
     {
-        this.Result = result;
+        Result = result;
     }
 }
 
@@ -68,18 +43,35 @@ namespace project3
         private void button1_Click(object sender, EventArgs e)
         {
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
-            {
                 UserFileName = openFileDialog1.FileName;
 
-                CsvFileDescription inputFileDescription = new CsvFileDescription {SeparatorChar = ';', FirstLineHasColumnNames = true};
-                CsvContext cc = new CsvContext();
-                IEnumerable<Student> students = cc.Read<Student>(UserFileName, inputFileDescription);
-                List<StudentResult> studentResults = new List<StudentResult>();
+            var students = new List<Student>();
 
-                foreach (var student in students)
+            using (StreamReader sr = new StreamReader(UserFileName))
+            {
+                sr.ReadLine();
+                while (!sr.EndOfStream)
                 {
-                    textBox1.Text += $"{student.StudNumber} {student.StudFIO} {NL}";
-                    //studentResults.Add(new StudentResult(student));
+                    string[] data = sr.ReadLine().Split(";").ToArray();
+                    students.Add(new Student(int.Parse(data[0]), data[1], data.Skip(2).Select(x => int.Parse(x == "" ? "0" : x)).ToArray()));
+                }
+            }
+
+            using (StreamWriter sw = new StreamWriter("result.csv"))
+            {
+                sw.WriteLine("№;ФИО студента;1 работа;2 работа;3 работа;4 работа;5 работа;6 работа;7 работа;8 работа;9 работа;10 работа;11 работа;12 работа;13 работа;14 работа;Бонус;Итого");
+                for (int i = 0; i < students.Count; i++)
+                {
+                    double score = 0.0;
+                    for (int j = 0; j < students[i].Score.Length; j++)
+                    {
+                        score += students[i].Score[j];
+
+                        if (students[i].Score[j] >= 1 && students[i].Score[j] <= 5)
+                            score += 0.5 - students[i].Score[j] / 10 + 0.1;
+                    }
+                    string scores = String.Join(";", students[i].Score);
+                    sw.WriteLine($"{students[i].StudNumber};{students[i].StudFIO};{scores};{Math.Round(score, 2)}");
                 }
             }
         }

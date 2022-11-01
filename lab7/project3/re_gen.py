@@ -292,3 +292,13 @@ with open('Data_МиСППИ_UTF-8.csv', 'w', encoding='utf-8', newline='') as f
     writer = csv.DictWriter(f, delimiter=';', fieldnames=list(data[0].keys()))
     writer.writeheader()
     writer.writerows(data)
+
+
+x = 23
+
+if x == 23:
+    print('win')
+elif x < 30:
+    print('no')
+else:
+    print('lose')
