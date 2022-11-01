@@ -1,10 +1,3 @@
-using System.Diagnostics.Metrics;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using static System.Windows.Forms.LinkLabel;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-
 namespace project2
 {
     public partial class Form1 : Form
@@ -12,6 +5,10 @@ namespace project2
         public Form1()
         {
             InitializeComponent();
+            textBox1.ScrollBars = ScrollBars.Both;
+            textBox1.WordWrap = false;
+            textBox2.ScrollBars = ScrollBars.Both;
+            textBox2.WordWrap = false;
         }
         
         string NL = Environment.NewLine;
@@ -44,7 +41,7 @@ namespace project2
             textBox2.Text += $"Х  оличество непустых строк: {notEmptyRowCount}{NL}";
             textBox2.Text += $"Х —ама€ коротка€ непуста€ строка: {shortestLine}{NL}";
             textBox2.Text += $"Х —ама€ длинна€ непуста€ строка: {longestLine}{NL}";
-            textBox2.Text += $"Х ћедиана: {medianLine}{NL}";
+            textBox2.Text += $"Х ћедиана - строка в середине текста.: {medianLine}{NL}";
         }
 
         string Median(string[] xs)
@@ -63,14 +60,21 @@ namespace project2
             var maxLength = fileText.Max(x => x.Length);
             var longestWords = fileText.Where(el => el.Length == maxLength);
 
+            List<int> wordsLenCountArray = new List<int>();
+            foreach (var word in fileText)
+            {
+                if (!wordsLenCountArray.Contains(word.Length))
+                    wordsLenCountArray.Add(word.Length);
+            }
+            wordsLenCountArray.Sort();
+
             textBox2.Text = $"Х »м€ считанного файла: {Path.GetFileName(UserFileName)}{NL}";
             textBox2.Text += $"Х  оличество слов: {wordsCount}{NL}";
             textBox2.Text += $"Х ƒлина самого длинного слова: {maxLength}{NL}";
             textBox2.Text += $"Х ѕервое и последнее слово текста имеющих самую большую длину: {longestWords.First()} и {longestWords.First()}{NL}";
-            foreach (var word in fileText)
-            // TODO: —делать по условию
+            foreach (var wordLen in wordsLenCountArray)
             {
-                textBox2.Text += $" {word.Length} | {fileText.Where(el => el.Length == word.Length).Count()} {NL}";
+                textBox2.Text += $" {wordLen} | {fileText.Where(el => el.Length == wordLen).Count()} {NL}";
             }
         }
     }
