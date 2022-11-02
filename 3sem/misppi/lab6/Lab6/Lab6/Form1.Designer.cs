@@ -37,6 +37,7 @@
             this.BInput = new System.Windows.Forms.TextBox();
             this.CInput = new System.Windows.Forms.TextBox();
             this.CalcBiquadraticEquation = new System.Windows.Forms.Button();
+            this.ErrorLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // AnswerLabel
@@ -67,6 +68,7 @@
             this.AInput.Size = new System.Drawing.Size(69, 23);
             this.AInput.TabIndex = 2;
             this.AInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.AInput_KeyPress);
+            this.AInput.KeyUp += new System.Windows.Forms.KeyEventHandler(this.AInput_KeyUp);
             // 
             // BInput
             // 
@@ -76,6 +78,7 @@
             this.BInput.Size = new System.Drawing.Size(69, 23);
             this.BInput.TabIndex = 3;
             this.BInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.BInput_KeyPress);
+            this.BInput.KeyUp += new System.Windows.Forms.KeyEventHandler(this.BInput_KeyUp);
             // 
             // CInput
             // 
@@ -85,6 +88,7 @@
             this.CInput.Size = new System.Drawing.Size(69, 23);
             this.CInput.TabIndex = 4;
             this.CInput.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.CInput_KeyPress);
+            this.CInput.KeyUp += new System.Windows.Forms.KeyEventHandler(this.CInput_KeyUp);
             // 
             // CalcBiquadraticEquation
             // 
@@ -96,11 +100,21 @@
             this.CalcBiquadraticEquation.UseVisualStyleBackColor = true;
             this.CalcBiquadraticEquation.Click += new System.EventHandler(this.CalcBiquadraticEquation_Click);
             // 
+            // ErrorLabel
+            // 
+            this.ErrorLabel.AutoSize = true;
+            this.ErrorLabel.ForeColor = System.Drawing.Color.Red;
+            this.ErrorLabel.Location = new System.Drawing.Point(62, 172);
+            this.ErrorLabel.Name = "ErrorLabel";
+            this.ErrorLabel.Size = new System.Drawing.Size(0, 15);
+            this.ErrorLabel.TabIndex = 6;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(480, 357);
+            this.Controls.Add(this.ErrorLabel);
             this.Controls.Add(this.CalcBiquadraticEquation);
             this.Controls.Add(this.CInput);
             this.Controls.Add(this.BInput);
@@ -136,5 +150,6 @@
         private TextBox BInput;
         private TextBox CInput;
         private Button CalcBiquadraticEquation;
+        private Label ErrorLabel;
     }
 }

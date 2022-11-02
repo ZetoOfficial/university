@@ -9,12 +9,14 @@ namespace Lab6
 
         public string DefaultFormText { get; set; }
         public bool IsChangeColorActive { get; set; }
+        private string ActualEquation { get; set; }
 
         public Form1()
         {
             InitializeComponent();
             DefaultFormText = Text;
             IsChangeColorActive = true;
+            KeyPreview = true;
         }
 
         private void Form1_MouseMove(object sender, MouseEventArgs e)
@@ -106,7 +108,7 @@ namespace Lab6
         }
         private bool validateInput(string text, char newChar)
         {
-            var allowSigns = new List<Char>() { '.' };
+            var allowSigns = new List<Char>() { ',' };
             int charCount = text.Where(e1 => allowSigns.Contains(e1)).ToArray().Length;
 
             var backSpace = (char)8;
@@ -114,34 +116,46 @@ namespace Lab6
             if (newChar == backSpace || Char.IsDigit(newChar) || !Char.IsDigit(newChar) && text.Length == 0 && newChar == '-' || !Char.IsDigit(newChar) && allowSigns.Contains(newChar) && charCount < maxAllowSignsCountInText) return true;
             return false;
         }
-        
         private void AInput_KeyPress(object sender, KeyPressEventArgs e)
         {
             char newChar = e.KeyChar;
             e.Handled = !validateInput(AInput.Text, newChar);
         }
-
         private void BInput_KeyPress(object sender, KeyPressEventArgs e)
         {
             char newChar = e.KeyChar;
             e.Handled = !validateInput(BInput.Text, newChar);
+            if (validateInput(BInput.Text, newChar)) ReCalculate();
         }
-
         private void CInput_KeyPress(object sender, KeyPressEventArgs e)
         {
             char newChar = e.KeyChar;
             e.Handled = !validateInput(CInput.Text, newChar);
+            if (validateInput(CInput.Text, newChar)) ReCalculate();
+        }
+        private void AInput_KeyUp(object sender, KeyEventArgs e)
+        {
+            ReCalculate();
+        }
+        private void BInput_KeyUp(object sender, KeyEventArgs e)
+        {
+            ReCalculate();
+        }
+        private void CInput_KeyUp(object sender, KeyEventArgs e)
+        {
+            ReCalculate();
         }
         private bool ValidateBoxes()
         {
             if (AInput.Text == "" || BInput.Text == "" || CInput.Text == "")
             {
-                MessageBox.Show("¬ведите a/b/c", "ќшибка");
+                ErrorLabel.Text = "ќшибка: ¬ведите a/b/c";
                 return false;
             }
+            ErrorLabel.Text = "";
             return true;
         }
-        private void CalcQuadraticEquation_Click(object sender, EventArgs e)
+        private void CalculateQuadraticEquation()
         {
             if (!ValidateBoxes()) return;
             quadraticEquation.A = Convert.ToDouble(AInput.Text);
@@ -149,8 +163,7 @@ namespace Lab6
             quadraticEquation.C = Convert.ToDouble(CInput.Text);
             AnswerLabel.Text = quadraticEquation.Solve();
         }
-
-        private void CalcBiquadraticEquation_Click(object sender, EventArgs e)
+        private void CalculateBiquadraticEquation()
         {
             if (!ValidateBoxes()) return;
             biquadraticEquation.A = Convert.ToDouble(AInput.Text);
@@ -158,5 +171,29 @@ namespace Lab6
             biquadraticEquation.C = Convert.ToDouble(CInput.Text);
             AnswerLabel.Text = biquadraticEquation.Solve();
         }
+        private void ReCalculate()
+        {
+            switch (ActualEquation)
+            {
+                case "Quadratic":
+                    CalculateQuadraticEquation();
+                    break;
+                case "Biquadratic":
+                    CalculateBiquadraticEquation();
+                    break;
+            }
+        }
+        private void CalcQuadraticEquation_Click(object sender, EventArgs e)
+        {
+            CalculateQuadraticEquation();
+            ActualEquation = "Quadratic";
+        }
+
+        private void CalcBiquadraticEquation_Click(object sender, EventArgs e)
+        {
+            CalculateBiquadraticEquation();
+            ActualEquation = "Biquadratic";
+        }
+
     }
 }
