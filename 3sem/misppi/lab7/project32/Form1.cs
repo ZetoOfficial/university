@@ -58,6 +58,7 @@ namespace project32
                     studentsWithResult.Add(new StudentResult(students[i].StudNumber, students[i].StudFIO, students[i].Score, Math.Round(score, 2)));
                 }
             }
+            button2.Enabled = true;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -68,6 +69,7 @@ namespace project32
                 string scores = String.Join(";", students[i].Score);
                 textBox1.Text += $"{students[i].StudNumber};{students[i].StudFIO};{scores}{NL}";
             }
+            button3.Enabled = true;
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -78,12 +80,12 @@ namespace project32
                 string scores = String.Join(";", studentsWithResult[i].Score);
                 textBox1.Text += $"{studentsWithResult[i].StudNumber};{studentsWithResult[i].StudFIO};{scores};{studentsWithResult[i].Result}{NL}";
             }
+            button4.Enabled = true;
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
             var sb = new System.Text.StringBuilder();
-            //sb.Append(String.Format("{0,-5} || {1, -50} || {2, -20} || {3, -17}" + NL, "№", "ФИО", "Работ сдано", "Рейтинг"));
             sb.Append(String.Format("{0}\t || {1}\t\t\t\t || {2}\t || {3}" + NL, "№", "ФИО", "Работ сдано", "Рейтинг"));
 
             studentsWithResult = studentsWithResult.OrderByDescending(x => x.Result).ToList();

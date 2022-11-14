@@ -32,13 +32,13 @@
             this.InfoPanel = new System.Windows.Forms.Panel();
             this.DiagnosisBox = new System.Windows.Forms.ComboBox();
             this.SexBox = new System.Windows.Forms.ComboBox();
-            this.DoctorVisitDate = new System.Windows.Forms.Label();
-            this.birthdate = new System.Windows.Forms.Label();
-            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
-            this.birth = new System.Windows.Forms.DateTimePicker();
+            this.doctorVisitDateLabel = new System.Windows.Forms.Label();
+            this.birthdateLabel = new System.Windows.Forms.Label();
+            this.doctorVisitDatePicker = new System.Windows.Forms.DateTimePicker();
+            this.birthdateDatePicker = new System.Windows.Forms.DateTimePicker();
             this.FIOTextBox = new System.Windows.Forms.TextBox();
             this.SaveButton = new System.Windows.Forms.Button();
-            this.DeleteButton = new System.Windows.Forms.Button();
+            this.CancelButton = new System.Windows.Forms.Button();
             this.InfoPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -46,14 +46,13 @@
             // 
             this.InfoPanel.Controls.Add(this.DiagnosisBox);
             this.InfoPanel.Controls.Add(this.SexBox);
-            this.InfoPanel.Controls.Add(this.DoctorVisitDate);
-            this.InfoPanel.Controls.Add(this.birthdate);
-            this.InfoPanel.Controls.Add(this.dateTimePicker2);
-            this.InfoPanel.Controls.Add(this.birth);
+            this.InfoPanel.Controls.Add(this.doctorVisitDateLabel);
+            this.InfoPanel.Controls.Add(this.birthdateLabel);
+            this.InfoPanel.Controls.Add(this.doctorVisitDatePicker);
+            this.InfoPanel.Controls.Add(this.birthdateDatePicker);
             this.InfoPanel.Controls.Add(this.FIOTextBox);
             this.InfoPanel.Controls.Add(this.SaveButton);
-            this.InfoPanel.Controls.Add(this.DeleteButton);
-            this.InfoPanel.Enabled = false;
+            this.InfoPanel.Controls.Add(this.CancelButton);
             this.InfoPanel.Location = new System.Drawing.Point(13, 12);
             this.InfoPanel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.InfoPanel.Name = "InfoPanel";
@@ -91,44 +90,44 @@
             this.SexBox.Size = new System.Drawing.Size(181, 23);
             this.SexBox.TabIndex = 14;
             // 
-            // DoctorVisitDate
+            // doctorVisitDateLabel
             // 
-            this.DoctorVisitDate.AutoSize = true;
-            this.DoctorVisitDate.Location = new System.Drawing.Point(4, 76);
-            this.DoctorVisitDate.Name = "DoctorVisitDate";
-            this.DoctorVisitDate.Size = new System.Drawing.Size(136, 15);
-            this.DoctorVisitDate.TabIndex = 13;
-            this.DoctorVisitDate.Text = "Дата посещения врача:";
+            this.doctorVisitDateLabel.AutoSize = true;
+            this.doctorVisitDateLabel.Location = new System.Drawing.Point(4, 76);
+            this.doctorVisitDateLabel.Name = "doctorVisitDateLabel";
+            this.doctorVisitDateLabel.Size = new System.Drawing.Size(136, 15);
+            this.doctorVisitDateLabel.TabIndex = 13;
+            this.doctorVisitDateLabel.Text = "Дата посещения врача:";
             // 
-            // birthdate
+            // birthdateLabel
             // 
-            this.birthdate.AutoSize = true;
-            this.birthdate.Location = new System.Drawing.Point(4, 31);
-            this.birthdate.Name = "birthdate";
-            this.birthdate.Size = new System.Drawing.Size(93, 15);
-            this.birthdate.TabIndex = 12;
-            this.birthdate.Text = "Дата рождения:";
+            this.birthdateLabel.AutoSize = true;
+            this.birthdateLabel.Location = new System.Drawing.Point(4, 31);
+            this.birthdateLabel.Name = "birthdateLabel";
+            this.birthdateLabel.Size = new System.Drawing.Size(93, 15);
+            this.birthdateLabel.TabIndex = 12;
+            this.birthdateLabel.Text = "Дата рождения:";
             // 
-            // dateTimePicker2
+            // doctorVisitDatePicker
             // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(4, 94);
-            this.dateTimePicker2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.dateTimePicker2.MinDate = new System.DateTime(2020, 12, 25, 0, 0, 0, 0);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(183, 23);
-            this.dateTimePicker2.TabIndex = 11;
-            this.dateTimePicker2.Value = new System.DateTime(2022, 11, 8, 9, 15, 32, 0);
+            this.doctorVisitDatePicker.Location = new System.Drawing.Point(4, 94);
+            this.doctorVisitDatePicker.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.doctorVisitDatePicker.MinDate = new System.DateTime(2020, 12, 25, 0, 0, 0, 0);
+            this.doctorVisitDatePicker.Name = "doctorVisitDatePicker";
+            this.doctorVisitDatePicker.Size = new System.Drawing.Size(183, 23);
+            this.doctorVisitDatePicker.TabIndex = 11;
+            this.doctorVisitDatePicker.Value = new System.DateTime(2022, 11, 8, 9, 15, 32, 0);
             // 
-            // birth
+            // birthdateDatePicker
             // 
-            this.birth.Location = new System.Drawing.Point(4, 49);
-            this.birth.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.birth.MaxDate = new System.DateTime(2022, 11, 8, 0, 0, 0, 0);
-            this.birth.MinDate = new System.DateTime(1822, 1, 1, 0, 0, 0, 0);
-            this.birth.Name = "birth";
-            this.birth.Size = new System.Drawing.Size(183, 23);
-            this.birth.TabIndex = 10;
-            this.birth.Value = new System.DateTime(2022, 11, 8, 0, 0, 0, 0);
+            this.birthdateDatePicker.Location = new System.Drawing.Point(4, 49);
+            this.birthdateDatePicker.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.birthdateDatePicker.MaxDate = new System.DateTime(2022, 11, 8, 0, 0, 0, 0);
+            this.birthdateDatePicker.MinDate = new System.DateTime(1822, 1, 1, 0, 0, 0, 0);
+            this.birthdateDatePicker.Name = "birthdateDatePicker";
+            this.birthdateDatePicker.Size = new System.Drawing.Size(183, 23);
+            this.birthdateDatePicker.TabIndex = 10;
+            this.birthdateDatePicker.Value = new System.DateTime(2022, 11, 8, 0, 0, 0, 0);
             // 
             // FIOTextBox
             // 
@@ -149,16 +148,18 @@
             this.SaveButton.TabIndex = 5;
             this.SaveButton.Text = "Сохранить";
             this.SaveButton.UseVisualStyleBackColor = true;
+            this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
             // 
-            // DeleteButton
+            // CancelButton
             // 
-            this.DeleteButton.Location = new System.Drawing.Point(97, 184);
-            this.DeleteButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.DeleteButton.Name = "DeleteButton";
-            this.DeleteButton.Size = new System.Drawing.Size(88, 27);
-            this.DeleteButton.TabIndex = 6;
-            this.DeleteButton.Text = "Удалить";
-            this.DeleteButton.UseVisualStyleBackColor = true;
+            this.CancelButton.Location = new System.Drawing.Point(97, 185);
+            this.CancelButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.CancelButton.Name = "CancelButton";
+            this.CancelButton.Size = new System.Drawing.Size(88, 27);
+            this.CancelButton.TabIndex = 6;
+            this.CancelButton.Text = "Отменить";
+            this.CancelButton.UseVisualStyleBackColor = true;
+            this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // EditDataForm
             // 
@@ -171,6 +172,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "EditDataForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "EditDataForm";
             this.InfoPanel.ResumeLayout(false);
             this.InfoPanel.PerformLayout();
@@ -183,12 +185,12 @@
         private Panel InfoPanel;
         private ComboBox DiagnosisBox;
         private ComboBox SexBox;
-        private Label DoctorVisitDate;
-        private Label birthdate;
-        private DateTimePicker dateTimePicker2;
-        private DateTimePicker birth;
+        private Label doctorVisitDateLabel;
+        private Label birthdateLabel;
+        private DateTimePicker doctorVisitDatePicker;
+        private DateTimePicker birthdateDatePicker;
         private TextBox FIOTextBox;
         private Button SaveButton;
-        private Button DeleteButton;
+        private Button CancelButton;
     }
 }

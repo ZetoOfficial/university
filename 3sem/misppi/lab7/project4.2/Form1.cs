@@ -1,15 +1,20 @@
 using System.IO;
-using System.Windows.Forms;
 
 namespace project4._2
 {
     public partial class Form1 : Form
     {
-        FileManager fileManager = new FileManager();
+        public FileManager fileManager = new FileManager();
 
         public Form1()
         {
             InitializeComponent();
+            this.diagnosisComboBox.Items.AddRange(new object[] {
+            "диагноз",
+            "питонист",
+            "антогонист",
+            "прочее..."});
+            diagnosisComboBox.SelectedIndex = 0;
         }
 
         private void TxtToXmlOrJson_Click(object sender, EventArgs e)
@@ -21,12 +26,13 @@ namespace project4._2
                 switch (dialogResult)
                 {
                     case DialogResult.Yes:
-                        fileManager.ToJson(fileManager.Patients);
+                        fileManager.ToJson();
                         break;
                     case DialogResult.No:
-                        fileManager.ToXml(fileManager.Patients);
+                        fileManager.ToXml();
                         break;
                 }
+                ExportButton.Enabled = true;
             }
         }
         public void UpdatePreviewFormData(Patient patient)
@@ -39,8 +45,6 @@ namespace project4._2
         }
         private void ImportButton_Click(object sender, EventArgs e)
         {
-            // load from xml/json
-            // show in ListBox
             if (openImportFileDialog.ShowDialog() == DialogResult.OK)
             {
                 var path = openImportFileDialog.FileName;
@@ -59,40 +63,102 @@ namespace project4._2
             }
         }
 
+        public Patient GetCurrentPatient()
+        {
+            var selectedItem = patientListBox.SelectedItem;
+            if (selectedItem is null) return null;
+            string curItem = selectedItem.ToString();
+            int index = patientListBox.FindString(curItem);
+
+            if (index == -1 || index < 0) return null;
+            if (index > fileManager.Patients.Count) return null;
+
+            return fileManager.Patients[index];
+        }
+
         private void patientListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string curItem = patientListBox.SelectedItem.ToString();
-            int index = patientListBox.FindString(curItem);
-            
-            if (index == -1) return;
-            if (index > fileManager.Patients.Count) return;
-            
-            patientListBox.SetSelected(index, true);
-
-            Patient patient = fileManager.Patients[index];
+            Patient patient = GetCurrentPatient();
+            if (patient == null) return;
             UpdatePreviewFormData(patient);
-            
-            previewInfoPanel.Enabled = true;
-        }
 
+            previewInfoPanel.Enabled = patientListBox.Items.Count > 0;
+            DeleteButton.Enabled = patientListBox.Items.Count > 0;
+            EditButton.Enabled = patientListBox.Items.Count > 0;
+            ExportButton.Enabled = patientListBox.Items.Count > 0;
+        }
         private void ExportButton_Click(object sender, EventArgs e)
         {
-            saveFileDialog.ShowDialog();
-        }
+            var patient = GetCurrentPatient();
+            if (patient == null) return;
 
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                var path = saveFileDialog.FileName;
+
+                switch (Path.GetExtension(path))
+                {
+                    case ".pdf":
+                        fileManager.ToPdf(patient, path);
+                        break;
+                    case ".docx":
+                        fileManager.ToWord(patient, path);
+                        break;
+                    case ".xlsx":
+                        fileManager.ToExcel(patient, path);
+                        break;
+                }
+            }
+        }
+        public void UpdateFileInfo()
+        {
+            switch (Path.GetExtension(fileManager.LastUsePath))
+            {
+                case ".json":
+                    fileManager.ToJson();
+                    break;
+                case ".xml":
+                    fileManager.ToXml();
+                    break;
+            }
+        }
         private void AddButton_Click(object sender, EventArgs e)
         {
-            // Add new item in xml/json file
+            EditDataForm userInputForm = new EditDataForm(ActionEnum.New);
+            userInputForm.Show();
         }
 
         private void EditButton_Click(object sender, EventArgs e)
         {
-            // Edit selected in ListBox item
+            EditDataForm userInputForm = new EditDataForm(ActionEnum.Edit);
+            userInputForm.Show();
         }
 
         private void DeleteButton_Click(object sender, EventArgs e)
         {
-            // Delete selected in ListBox item
+            var selectedItem = patientListBox.SelectedItem;
+            if (selectedItem is null) return;
+
+            Patient patient = GetCurrentPatient();
+            if (patient == null) return;
+
+            fileManager.Patients.Remove(patient);
+            patientListBox.Items.Remove(selectedItem);
+
+            previewInfoPanel.Enabled = false;
+            DeleteButton.Enabled = false;
+            EditButton.Enabled = false;
+            ExportButton.Enabled = false;
+            UpdateFileInfo();
+        }
+        public void ReCalcTotalPatients()
+        {
+            var patientCount = fileManager.Patients.Where(el => el.Diagnosis == diagnosisComboBox.Text).Count();
+            totalDiagnosisLabel.Text = $"¬сего: {patientCount}";
+        }
+        private void diagnosisComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ReCalcTotalPatients();
         }
     }
 }

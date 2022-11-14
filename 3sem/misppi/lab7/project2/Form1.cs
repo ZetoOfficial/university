@@ -22,6 +22,7 @@ namespace project2
                 UserFileName = openFileDialog1.FileName; 
                 string[] fileText = File.ReadAllLines(UserFileName);
                 textBox1.Text = String.Join(NL, fileText);
+                button2.Enabled = true;
             }
         }
 
@@ -42,6 +43,7 @@ namespace project2
             textBox2.Text += $"• Самая короткая непустая строка: {shortestLine}{NL}";
             textBox2.Text += $"• Самая длинная непустая строка: {longestLine}{NL}";
             textBox2.Text += $"• Медиана - строка в середине текста.: {medianLine}{NL}";
+            button3.Enabled = true;
         }
 
         string Median(string[] xs)

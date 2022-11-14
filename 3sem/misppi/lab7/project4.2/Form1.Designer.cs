@@ -80,7 +80,7 @@
             // 
             // AddButton
             // 
-            this.AddButton.Location = new System.Drawing.Point(4, 230);
+            this.AddButton.Location = new System.Drawing.Point(207, 244);
             this.AddButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.AddButton.Name = "AddButton";
             this.AddButton.Size = new System.Drawing.Size(181, 27);
@@ -91,7 +91,8 @@
             // 
             // EditButton
             // 
-            this.EditButton.Location = new System.Drawing.Point(3, 256);
+            this.EditButton.Enabled = false;
+            this.EditButton.Location = new System.Drawing.Point(206, 270);
             this.EditButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.EditButton.Name = "EditButton";
             this.EditButton.Size = new System.Drawing.Size(93, 27);
@@ -102,7 +103,8 @@
             // 
             // DeleteButton
             // 
-            this.DeleteButton.Location = new System.Drawing.Point(94, 256);
+            this.DeleteButton.Enabled = false;
+            this.DeleteButton.Location = new System.Drawing.Point(297, 270);
             this.DeleteButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.DeleteButton.Name = "DeleteButton";
             this.DeleteButton.Size = new System.Drawing.Size(91, 27);
@@ -156,15 +158,12 @@
             this.previewInfoPanel.Controls.Add(this.outBirthdateBox);
             this.previewInfoPanel.Controls.Add(this.diagnosisLabel);
             this.previewInfoPanel.Controls.Add(this.birthdateLabel);
-            this.previewInfoPanel.Controls.Add(this.AddButton);
             this.previewInfoPanel.Controls.Add(this.outFioBox);
-            this.previewInfoPanel.Controls.Add(this.EditButton);
-            this.previewInfoPanel.Controls.Add(this.DeleteButton);
             this.previewInfoPanel.Enabled = false;
             this.previewInfoPanel.Location = new System.Drawing.Point(203, 14);
             this.previewInfoPanel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.previewInfoPanel.Name = "previewInfoPanel";
-            this.previewInfoPanel.Size = new System.Drawing.Size(191, 284);
+            this.previewInfoPanel.Size = new System.Drawing.Size(191, 228);
             this.previewInfoPanel.TabIndex = 10;
             // 
             // outDoctorVisitDateBox
@@ -263,7 +262,7 @@
             // 
             // saveFileDialog
             // 
-            this.saveFileDialog.Filter = "\"Word|*.docx|Excel|*.xlsx|Pdf|*.pdf\"";
+            this.saveFileDialog.Filter = "Word|*.docx|Excel|*.xlsx|Pdf|*.pdf";
             // 
             // openTxtDialog
             // 
@@ -278,6 +277,7 @@
             this.diagnosisComboBox.Name = "diagnosisComboBox";
             this.diagnosisComboBox.Size = new System.Drawing.Size(181, 23);
             this.diagnosisComboBox.TabIndex = 11;
+            this.diagnosisComboBox.SelectedIndexChanged += new System.EventHandler(this.diagnosisComboBox_SelectedIndexChanged);
             // 
             // selectDiagnosisLabel
             // 
@@ -311,6 +311,9 @@
             this.Controls.Add(this.ExportButton);
             this.Controls.Add(this.ImportButton);
             this.Controls.Add(this.TxtToXmlOrJson);
+            this.Controls.Add(this.AddButton);
+            this.Controls.Add(this.DeleteButton);
+            this.Controls.Add(this.EditButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -333,7 +336,7 @@
         private System.Windows.Forms.Button EditButton;
         private System.Windows.Forms.Button DeleteButton;
         private System.Windows.Forms.Button ExportButton;
-        private System.Windows.Forms.ListBox patientListBox;
+        public System.Windows.Forms.ListBox patientListBox;
         private System.Windows.Forms.TextBox outFioBox;
         private System.Windows.Forms.Panel previewInfoPanel;
         private Label birthdateLabel;

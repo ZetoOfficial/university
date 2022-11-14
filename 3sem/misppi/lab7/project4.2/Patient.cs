@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace project4._2
+﻿namespace project4._2
 {
     public class Patient
     {
-        public string FIO { get; set; }
+        private string fio;
+        public string FIO { get => fio; set { if (value.Length >= 3) { fio = value; } else { throw new ArgumentException("Фио минимум из 3 букв."); } } }
         public DateTime Birthdate { get; set; }
         public DateTime DoctorVisitDate { get; set; }
-        public string Diagnosis { get; set; }
-        public bool Sex { get; set; }
+        private string diagnosis;
+        public string Diagnosis { get => diagnosis; set { if (value != "диагноз") { diagnosis = value; } else { throw new ArgumentException("А диагноз?"); } } }
+        public bool Sex { get; set ; }
         public Patient() { }
-        public Patient(string fIO, DateTime birthdate, DateTime doctorVisitDate, string diagnosis, bool sex)
+        public Patient(string fio, DateTime birthdate, DateTime doctorVisitDate, string diagnosis, bool sex)
         {
-            FIO = fIO;
+            FIO = fio;
             Birthdate = birthdate;
             DoctorVisitDate = doctorVisitDate;
             Diagnosis = diagnosis;
