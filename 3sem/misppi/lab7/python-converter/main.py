@@ -1,11 +1,10 @@
-from datetime import date, datetime
+import argparse
+import json
+from datetime import date
 
 import docx
-from fastapi import FastAPI, HTTPException
 from pandas import DataFrame
 from pydantic import BaseModel
-
-app = FastAPI()
 
 
 class Patient(BaseModel):
@@ -39,10 +38,14 @@ def convert_to_word(data: Patient, path: str) -> FileInfo:
     return FileInfo(path=path, file_type='excel')
 
 
-@app.post('/convert', response_model=FileInfo)
-async def convert_data_to_file(filepath: str, data: Patient):
-    if filepath.endswith('.xlsx'):
-        return convert_to_xlsx(data, filepath)
-    if filepath.endswith('.docx'):
-        return convert_to_word(data, filepath)
-    raise HTTPException(status_code=400, detail='invalid file format')
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--path", help="Save path")
+    parser.add_argument("--data", help="Convert data")
+    args = parser.parse_args()
+    dict_data = json.loads(args.data.replace("'", '"'))
+    data = Patient.parse_obj(dict_data)
+    if args.path.endswith('.xlsx'):
+        convert_to_xlsx(data, args.path)
+    if args.path.endswith('.docx'):
+        convert_to_word(data, args.path)
