@@ -40,6 +40,7 @@ namespace lab8
 
         private void button4_Click(object sender, EventArgs e)
         {
+            if (Size.Width + 10 > 600 && Size.Height + 10 > 400) return;
             this.FormBorderStyle = borderStyles[borderStyle];
             this.Text = FormBorderStyle.ToString();
             borderStyle = (borderStyle + 1) % 5;
