@@ -1,5 +1,7 @@
 using System.Drawing.Drawing2D;
 using System.Text;
+using System.Reflection;
+using System.IO;
 
 namespace project2
 {
@@ -18,6 +20,7 @@ namespace project2
             listBox1.SelectionMode = SelectionMode.MultiSimple;
             listBox2.SelectionMode = SelectionMode.MultiSimple;
             KeyPreview = true;
+            typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, gradientPanel, new object[] { true });
         }
 
         private void listBox1_DragDrop(object sender, DragEventArgs e)
@@ -27,7 +30,7 @@ namespace project2
             {
                 listBox1.Items.Add(listBox2.SelectedItems[i]);
                 listBox2.Items.Remove(listBox2.SelectedItems[i]);
-                if (i == 0) logBox.Text = "Перемещены выделенные строки из второго листбокса в первый{NL}{logBox.Text}";;
+                if (i == 0) logBox.Text = $"Перемещены выделенные строки из второго листбокса в первый{NL}{logBox.Text}";;
             }
             for (int i = 0; i < listBox2.Items.Count; i++)
             {
@@ -46,12 +49,12 @@ namespace project2
             if (e.Data.GetData(typeof(ListBox)) == listBox1)
             {
                 listBox1.Items.Clear();
-                logBox.Text = "Добавлен текст в 1 листбокс{NL}{logBox.Text}";;
+                logBox.Text = $"Добавлен текст в 1 листбокс{NL}{logBox.Text}";
             }
             else if (e.Data.GetData(typeof(ListBox)) == listBox2)
             {
                 listBox2.Items.Clear();
-                logBox.Text = "Добавлен текст вo 2 листбокс{NL}{logBox.Text}";;
+                logBox.Text = $"Добавлен текст вo 2 листбокс{NL}{logBox.Text}";
             }
 
             for (int i = 0; i < masLines.Length; i++)
@@ -72,7 +75,7 @@ namespace project2
                 logBox.Text = $"Сохранен текст из 2 листбокса{NL}{logBox.Text}";
 
             File.Delete("Lab12.txt");
-            using FileStream stream = new("Lab12.txt", FileMode.OpenOrCreate);
+            using FileStream stream = new("Lab12.txt", FileMode.OpenOrCreate);  
             using StreamWriter writer = new(stream, Encoding.Default);
             if (e.Data.GetData(typeof(ListBox)) == listBox1)
                 for (int i = 0; i < listBox1.Items.Count; i++)

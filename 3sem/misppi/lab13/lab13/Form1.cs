@@ -38,7 +38,9 @@ namespace lab13
                 textBox.Text = (string)e.Data.GetData(DataFormats.Text);
 
                 if (textBox.Text != String.Empty)
+                {
                     textBox.BackColor = Color.LightGray;
+                }
 
                 ownerLabel = (Label)Controls[textBox.Text];
 
