@@ -1,0 +1,37 @@
+
+type cell struct {
+	items []item
+	cost  int
+}
+type item struct {
+	cost int
+	size int
+}
+
+
+func Knap(items []item, capacity int) cell {
+	// Оценка: O(N*Capacity)
+	costTable := make([][]cell, len(items)+1)
+	for i := range costTable {
+		costTable[i] = make([]cell, capacity+1)
+	}
+	for i := 1; i <= len(items); i++ {
+		for j := 1; j <= capacity; j++ {
+			// На случай, если вес текущей вещи больше вместимости текущего рюкзака
+			if items[i-1].size > j {
+				costTable[i][j] = costTable[i-1][j]
+			} else {
+				lastMaxCost := costTable[i-1][j].cost
+				// Current item cost + remaining space cost (cell[i-1][j-item.size])
+				maxAvailableCost := items[i-1].cost + (costTable[i-1][j-items[i-1].size]).cost
+				if lastMaxCost > maxAvailableCost {
+					costTable[i][j] = costTable[i-1][j]
+				} else {
+					costTable[i][j] = cell{items: append(costTable[i-1][j].items, items[i-1]), cost: maxAvailableCost}
+				}
+				// costTable[i][j] = Max(lastMaxCost, maxAvailableCost)
+			}
+		}
+	}
+	return costTable[len(items)][capacity]
+}
