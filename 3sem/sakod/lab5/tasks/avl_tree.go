@@ -167,6 +167,7 @@ func printAVLTree(root *AVLNode, prefix string) {
 
 func Task2() {
 	var root *AVLNode
+
 	root = AVLInsert(root, 439)
 	root = AVLInsert(root, 228)
 	root = AVLInsert(root, 302)
