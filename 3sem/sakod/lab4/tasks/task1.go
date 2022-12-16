@@ -37,13 +37,10 @@ func printTree(node *Node, prefix string) {
 }
 
 func Task1() {
-	// Read data
 	var nodes []string = ReadNodesFromFile("input.txt")
 
-	// Build tree
 	tree := buildBalancedTree(nodes, 0, len(nodes)-1)
 
-	// Print tree
 	printTree(tree, "")
 }
 
@@ -65,6 +62,10 @@ func ReadNodesFromFile(filename string) []string {
 		line := scanner.Text()
 		line = strings.TrimSpace(line)
 		nodes = strings.Split(line, " ")
+	}
+
+	if scanner.Err() != nil {
+		fmt.Println("Error reading file:", err)
 	}
 
 	return nodes
