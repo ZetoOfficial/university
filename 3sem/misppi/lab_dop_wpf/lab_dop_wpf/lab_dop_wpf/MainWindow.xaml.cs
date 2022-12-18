@@ -85,7 +85,7 @@ namespace lab_dop_wpf
         /// </summary>
         private void MenuItem_Delete_OnClick(object sender, RoutedEventArgs e)
         {
-            var numbers = DataGridMain.Items.OfType<DataGridItem>().Where(item => (int)item.Number % 2 == 0);
+            var numbers = DataGridMain.SelectedItems.OfType<DataGridItem>().ToList();
 
             // Remove items
             var tmp = (ObservableCollection<DataGridItem>)DataGridMain.ItemsSource;

@@ -9,7 +9,7 @@
         WindowStartupLocation="CenterScreen"
         Title="MainWindow" Height="500" Width="550">
     <Grid>
-        <Menu VerticalAlignment="Top" Height="20">
+        <Menu VerticalAlignment="Top" Height="20" ToolTip="Меню">
             <MenuItem Header="Menu">
                 <MenuItem Header="Удалить выделенный в DataGrid элемент"
                           Click="MenuItem_Delete_OnClick" />
@@ -28,7 +28,7 @@
                   VerticalAlignment="Top"
                   HorizontalAlignment="Left"
                   SelectionChanged="ComboBoxOnSelectionChanged"
-                  SelectedIndex="0">
+                  SelectedIndex="0" ToolTip="Выбор шрифта для формы">
             <ComboBoxItem FontFamily="Arial" Content="Arial"></ComboBoxItem>
             <ComboBoxItem FontFamily="Arial Black" Content="Arial Black"></ComboBoxItem>
             <ComboBoxItem FontFamily="Tahoma" Content="Tahoma"></ComboBoxItem>
@@ -46,14 +46,20 @@
                   HorizontalAlignment="Left"
                   VerticalAlignment="Top"
                   Margin="10 60"
-                  Width="200">
+                  Width="200"
+                  ToolTip="Выбор цвета для формы">
             <StackPanel>
                 <StackPanel Name="RadioButtonPanel">
-                    <RadioButton PreviewMouseDown="RadioButtonOnPreviewMouseDown" Margin="3" Content="Красный" />
-                    <RadioButton PreviewMouseDown="RadioButtonOnPreviewMouseDown" Margin="3" Content="Голубой" />
-                    <RadioButton PreviewMouseDown="RadioButtonOnPreviewMouseDown" Margin="3" Content="Зеленый" />
-                    <RadioButton PreviewMouseDown="RadioButtonOnPreviewMouseDown" Margin="3" Content="Серый" />
-                    <RadioButton PreviewMouseDown="RadioButtonOnPreviewMouseDown" Margin="3" Content="Белый"
+                    <RadioButton ToolTip="Установить Красный цвет" PreviewMouseDown="RadioButtonOnPreviewMouseDown"
+                                 Margin="3" Content="Красный" />
+                    <RadioButton ToolTip="Установить Голубой цвет" PreviewMouseDown="RadioButtonOnPreviewMouseDown"
+                                 Margin="3" Content="Голубой" />
+                    <RadioButton ToolTip="Установить Зеленый цвет" PreviewMouseDown="RadioButtonOnPreviewMouseDown"
+                                 Margin="3" Content="Зеленый" />
+                    <RadioButton ToolTip="Установить Серый цвет" PreviewMouseDown="RadioButtonOnPreviewMouseDown"
+                                 Margin="3" Content="Серый" />
+                    <RadioButton ToolTip="Установить Белый цвет" PreviewMouseDown="RadioButtonOnPreviewMouseDown"
+                                 Margin="3" Content="Белый"
                                  IsChecked="True" />
                     <RadioButton PreviewMouseDown="RadioButtonOnPreviewMouseDown" Margin="3" Content="Желтый" />
                 </StackPanel>
