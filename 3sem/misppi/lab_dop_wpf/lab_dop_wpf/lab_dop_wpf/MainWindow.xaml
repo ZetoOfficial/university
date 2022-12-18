@@ -48,48 +48,48 @@
                   Margin="10 60"
                   Width="200">
             <StackPanel>
-                <RadioButton
-                    Margin="3"
-                    Content="Красный"
-                    IsChecked="True"
-                    x:Name="RadioButtonDefaultFont">
-                </RadioButton>
-                <RadioButton Margin="3"
-                             Content="Голубой">
-                </RadioButton>
-                <RadioButton Margin="3"
-                             Content="Зеленый">
-                </RadioButton>
-                <RadioButton Margin="3"
-                             Content="Серый">
-                </RadioButton>
-                <RadioButton Margin="3"
-                             Content="Белый">
-                </RadioButton>
-                <RadioButton Margin="3"
-                             Content="Желтый">
-                </RadioButton>
+                <StackPanel Name="RadioButtonPanel">
+                    <RadioButton PreviewMouseDown="RadioButtonOnPreviewMouseDown" Margin="3" Content="Красный" />
+                    <RadioButton PreviewMouseDown="RadioButtonOnPreviewMouseDown" Margin="3" Content="Голубой" />
+                    <RadioButton PreviewMouseDown="RadioButtonOnPreviewMouseDown" Margin="3" Content="Зеленый" />
+                    <RadioButton PreviewMouseDown="RadioButtonOnPreviewMouseDown" Margin="3" Content="Серый" />
+                    <RadioButton PreviewMouseDown="RadioButtonOnPreviewMouseDown" Margin="3" Content="Белый"
+                                 IsChecked="True" />
+                    <RadioButton PreviewMouseDown="RadioButtonOnPreviewMouseDown" Margin="3" Content="Желтый" />
+                </StackPanel>
+                <StackPanel>
+                    <CheckBox Margin="3" PreviewMouseDown="CheckBoxOnPreviewMouseDown"
+                              ToolTip="После блокировки пропадет возможность выбора цвета формы!">
+                        <TextBlock Text="Block edit"></TextBlock>
+                    </CheckBox>
+                </StackPanel>
             </StackPanel>
         </GroupBox>
 
-        <StackPanel x:Name="StackPanelCheck"
-                    Margin="10 30"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top">
-            <CheckBox Height="20" x:Name="BlockComboBox" Content="Заблокировать изменения в ComboBox"
-                      ToolTip="После блокировки, в ComboBox нельзя будет выбрать Шрифта!"
-                      Click="BlockComboBoxOnClick" />
-            <CheckBox Height="20" x:Name="BlocGroupBox" Content="Заблокировать изменения в GroupBox"
-                      ToolTip="После блокировки пропадет возможность выбора цвета формы!" />
-        </StackPanel>
-
-        <DataGrid Height="230" Width="350"
-                  Margin="0 0 0 20"
-                  HorizontalAlignment="Left"
-                  VerticalAlignment="Bottom">
+        <DataGrid Width="200"
+                  Margin="0 30 10 10"
+                  Name="DataGridMain"
+                  ToolTip="Таблица с числами"
+                  HorizontalAlignment="Right"
+                  AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Числа" Width="1*" Binding="{Binding Number, StringFormat={}{0:n2}}" />
+            </DataGrid.Columns>
         </DataGrid>
-        <TextBox Width="100" Height="20" Margin="0 -125 0 0" ToolTip="TextBox для ввода элементов"></TextBox>
-        <ListBox SelectionMode="Multiple" Width="100" Height="100"
+        <TextBox x:Name="TextBoxForListBox"
+                 Background="White"
+                 HorizontalAlignment="Left"
+                 VerticalAlignment="Center"
+                 Margin="10 150 0 0"
+                 Width="200"
+                 ToolTip="TextBox для ввода значений">
+        </TextBox>
+        <ListBox x:Name="ListBox1"
+                 SelectionMode="Multiple"
+                 Margin="10 250 0 0"
+                 Height="60"
+                 HorizontalAlignment="Left"
+                 Width="200"
                  ToolTip="ListBox с элементами, нажмите ПКМ для доп. возможностей">
             <ListBox.ContextMenu>
                 <ContextMenu>
