@@ -15,6 +15,27 @@ namespace lab_dop_sdi
         public Детка()
         {
             InitializeComponent();
+            UpdateText();
+        }
+
+        public void UpdateText()
+        {
+            var text = $"Размеры текущей формы: {this.Size.Width}; {this.Size.Height}\n";
+            var mainFormSize = Program.MainForm.Size;
+            text += $"Размеры главной формы: {mainFormSize.Width}; {mainFormSize.Height}\n";
+            var aboutFormSize = Program.AboutForm.Size;
+            text += $"Размеры about формы: {aboutFormSize.Width}; {aboutFormSize.Height}";
+            infoLabel.Text = text;
+        }
+
+        private void Детка_Move(object sender, EventArgs e)
+        {
+            Program.MainForm.UpdateChildCoord(this.Text);
+        }
+
+        private void Детка_ResizeEnd(object sender, EventArgs e)
+        {
+            UpdateText();
         }
     }
 }

@@ -69,8 +69,13 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(346, 192);
             this.Name = "About";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "About";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.About_FormClosed);
+            this.ResizeEnd += new System.EventHandler(this.About_ResizeEnd);
+            this.Move += new System.EventHandler(this.About_Move);
             this.ResumeLayout(false);
             this.PerformLayout();
 

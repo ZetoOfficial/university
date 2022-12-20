@@ -16,5 +16,25 @@ namespace lab_dop_sdi
         {
             InitializeComponent();
         }
+
+        private void About_ResizeEnd(object sender, EventArgs e)
+        {
+            var forms = Program.MainForm.ChildrenForms;
+            foreach (var form in forms)
+            {
+                form.Child.UpdateText();
+            }
+        }
+
+        private void About_Move(object sender, EventArgs e)
+        {
+            Program.MainForm.aboutCoordLabel.Text = $"{Location.X} {Location.Y}";
+        }
+
+        private void About_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Program.AboutForm = new About();
+            Program.MainForm.aboutPanel.Enabled = false;
+        }
     }
 }

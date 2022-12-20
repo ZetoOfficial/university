@@ -11,7 +11,9 @@ namespace lab_dop_sdi
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new Form1());
+            Application.Run(MainForm);
         }
+        public static Form1 MainForm = new Form1();
+        public static About AboutForm = new About();
     }
 }
