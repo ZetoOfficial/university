@@ -75,6 +75,7 @@ func InterpolationSearch(arr []int, value int) int {
 
 // заполнение массива рандомными значениями
 func fillArray(arr []int) {
+	rand.Seed(time.Now().UnixNano())
 	for i := range arr {
 		arr[i] = rand.Intn(100)
 	}
@@ -82,11 +83,11 @@ func fillArray(arr []int) {
 
 func runSequentialSearch(arr []int, value int, M int) int64 {
 	start := time.Now()
-	for i := 0; i < M; i++ {
-		SequentialSearch(arr, value)
-	}
+	// for i := 0; i < M; i++ {
+	// }
+	ans := SequentialSearch(arr, value)
 	elapsed := time.Since(start).Nanoseconds()
-	fmt.Printf("Последовательный поиск: N: %v M: %v took %d ns\n", len(arr), M, elapsed)
+	fmt.Printf("Последовательный поиск: N: %v M: %v took %d ns | %v\n", len(arr), M, elapsed, ans)
 	return elapsed
 }
 
@@ -103,11 +104,11 @@ func runSequentialSearchWithBarrier(arr []int, value int, M int) int64 {
 
 func runBinarySearch(arr []int, value int, M int) int64 {
 	start := time.Now()
-	for i := 0; i < M; i++ {
-		BinarySearch(arr, value)
-	}
+	// for i := 0; i < M; i++ {
+	// }
+	ans := BinarySearch(arr, value)
 	elapsed := time.Since(start).Nanoseconds()
-	fmt.Printf("Бинарный поиск: N: %v M: %v took %d ns\n", len(arr), M, elapsed)
+	fmt.Printf("Бинарный поиск: N: %v M: %v took %d ns %v\n", len(arr), M, elapsed, ans)
 	return elapsed
 }
 
@@ -133,13 +134,13 @@ func Task7() {
 	var tempArr []int
 	var searchElem int = 45
 
-	sortFuncMap := map[string]func([]int, int, int) int64{
+	searchFuncMap := map[string]func([]int, int, int) int64{
 		"Последовательный поиск":      runSequentialSearch,
 		"Последовательный с барьером": runSequentialSearchWithBarrier,
 		"Бинарный поиск":              runBinarySearch,
 		"Интерполяционный поиск":      runInterpolationSearch,
 	}
-	sortFuncNames := []string{"Последовательный поиск", "Последовательный с барьером", "Бинарный поиск", "Интерполяционный поиск"}
+	searchFuncNames := []string{"Последовательный поиск", "Последовательный с барьером", "Бинарный поиск", "Интерполяционный поиск"}
 
 	// Заполняю тестовые массивчики с данными
 	for _, n := range nCountArray {
@@ -169,14 +170,14 @@ func Task7() {
 	}
 
 	// Заполняю таблицу
-	for _, iterations := range []int{5000, 10000, 20000} {
+	for _, iterations := range []int{5000} {
 		time.Sleep(time.Duration(1))
-		for _, funcName := range sortFuncNames {
+		for _, funcName := range searchFuncNames {
 			row = sheet.AddRow()
 			row.AddCell().Value = fmt.Sprintf("%v", iterations)
 			row.AddCell().Value = funcName
 			for _, n := range nTasksArray {
-				row.AddCell().Value = fmt.Sprintf("%v", sortFuncMap[funcName](n, searchElem, iterations))
+				row.AddCell().Value = fmt.Sprintf("%v", searchFuncMap[funcName](n, searchElem, iterations))
 			}
 		}
 	}

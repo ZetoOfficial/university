@@ -82,6 +82,7 @@ func recursiveBuildTreeOfArithmeticExpression(exp string) *Node {
 	if minPriorityIndex == -1 {
 		return &Node{Value: exp}
 	}
+	fmt.Println(string(exp[minPriorityIndex]))
 
 	// Если оператор найден, то строим дерево
 	node := &Node{Value: string(exp[minPriorityIndex])}

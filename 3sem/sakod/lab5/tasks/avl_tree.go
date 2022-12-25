@@ -160,7 +160,7 @@ func leftRotate(root *AVLNode) *AVLNode {
 func printAVLTree(root *AVLNode, prefix string) {
 	if root != nil {
 		printAVLTree(root.Right, prefix+"    ")
-		fmt.Printf("%v[%v]\n", prefix, root.Value)
+		fmt.Printf("%v[%v](%v)\n", prefix, root.Value, getBalance(root))
 		printAVLTree(root.Left, prefix+"    ")
 	}
 }
