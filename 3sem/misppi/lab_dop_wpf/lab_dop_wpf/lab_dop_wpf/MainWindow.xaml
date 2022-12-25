@@ -73,7 +73,7 @@
         </GroupBox>
 
         <DataGrid Width="200"
-                  Margin="0 30 10 10"
+                  Margin="0,30,10,10"
                   Name="DataGridMain"
                   ToolTip="Таблица с числами"
                   HorizontalAlignment="Right"
@@ -85,14 +85,14 @@
         <TextBox x:Name="TextBoxForListBox"
                  Background="White"
                  HorizontalAlignment="Left"
-                 VerticalAlignment="Center"
-                 Margin="10 150 0 0"
+                 VerticalAlignment="Top"
+                 Margin="10,289,0,0"
                  Width="200"
                  ToolTip="TextBox для ввода значений">
         </TextBox>
         <ListBox x:Name="ListBox1"
                  SelectionMode="Multiple"
-                 Margin="10 250 0 0"
+                 Margin="10,318,0,106"
                  Height="60"
                  HorizontalAlignment="Left"
                  Width="200"

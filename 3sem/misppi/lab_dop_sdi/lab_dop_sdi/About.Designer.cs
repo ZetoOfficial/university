@@ -75,7 +75,6 @@
             this.Text = "About";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.About_FormClosed);
             this.ResizeEnd += new System.EventHandler(this.About_ResizeEnd);
-            this.Move += new System.EventHandler(this.About_Move);
             this.ResumeLayout(false);
             this.PerformLayout();
 

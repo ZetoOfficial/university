@@ -39,7 +39,8 @@
             this.infoLabel.Name = "infoLabel";
             this.infoLabel.Size = new System.Drawing.Size(174, 45);
             this.infoLabel.TabIndex = 0;
-            this.infoLabel.Text = "Размеры текущей формы: x; y\r\nРазмеры главной формы: x; y\r\nРазмеры about формы: x; y";
+            this.infoLabel.Text = "Размеры текущей формы: x; y\r\nРазмеры главной формы: x; y\r\nРазмеры about формы: x;" +
+    " y";
             // 
             // Детка
             // 

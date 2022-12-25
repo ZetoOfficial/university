@@ -26,15 +26,10 @@ namespace lab_dop_sdi
             }
         }
 
-        private void About_Move(object sender, EventArgs e)
-        {
-            Program.MainForm.aboutCoordLabel.Text = $"{Location.X} {Location.Y}";
-        }
-
         private void About_FormClosed(object sender, FormClosedEventArgs e)
         {
+            Program.MainForm.Enabled = true;
             Program.AboutForm = new About();
-            Program.MainForm.aboutPanel.Enabled = false;
         }
     }
 }

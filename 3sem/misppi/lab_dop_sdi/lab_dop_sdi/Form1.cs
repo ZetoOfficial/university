@@ -19,7 +19,7 @@ namespace lab_dop_sdi
             return result == DialogResult.OK;
         }
 
-        private ChildForAFee? SelectedChild()
+        public ChildForAFee? SelectedChild()
         {
             if (childListBox.SelectedIndex != 0)
             {
@@ -39,6 +39,7 @@ namespace lab_dop_sdi
             childListBox.Items.Add(newForm.Name);
             childListBox.SelectedIndex = childListBox.Items.Count - 1;
 
+            checkBox1.Checked = true;
             newForm.Show();
         }
 
@@ -55,6 +56,7 @@ namespace lab_dop_sdi
                     childListBox.Items.Remove(child.Name);
                     ChildrenForms.Remove(child);
                 }
+                childPanel.Enabled = ChildrenForms.Count != 0;
                 return;
             }
             if (!CanClose(children.Child)) return;
@@ -63,19 +65,21 @@ namespace lab_dop_sdi
             childListBox.Items.Remove(children.Name);
             ChildrenForms.Remove(children);
             childListBox.SelectedIndex = saveIndex - 1;
-
+            childPanel.Enabled = ChildrenForms.Count != 0;
         }
 
         private void childListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             var child = SelectedChild();
+            childPanel.Enabled = ChildrenForms.Count != 0;
             if (child == null)
             {
                 childCoordLabel.Text = "Select form please ^_^";
-                childPanel.Enabled = false;
+                checkBox1.Enabled = ChildrenForms.All(el => el.Child.Visible);
                 return;
             }
-            childPanel.Enabled = true;
+            checkBox1.Enabled = true;
+            checkBox1.Checked = child.Child.Visible;
             UpdateChildCoord(child.Name);
             UpdateFormSizeInfo(child.Name);
         }
@@ -104,11 +108,16 @@ namespace lab_dop_sdi
         {
             if (e.KeyCode == Keys.Enter)
             {
-                var child = SelectedChild();
-                if (child == null) return;
                 var newName = childChangeNameTextBox.Text;
                 if (ChildrenForms.Find(el => el.Name == newName) != null) return;
-                child.Name = newName;
+
+                var child = SelectedChild();
+                if (child == null)
+                {
+                    foreach (var children in ChildrenForms.ToList())
+                        children.Name = newName;
+                }
+                else { child.Name = newName; }
 
                 var selIndex = childListBox.SelectedIndex;
 
@@ -133,76 +142,87 @@ namespace lab_dop_sdi
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             var child = SelectedChild();
-            if (child == null) return;
-            child.Child.Visible = !child.Child.Visible;
+            if (child == null)
+            {
+                foreach (var children in ChildrenForms.ToList())
+                    children.Child.Visible = !children.Child.Visible;
+            }
+            else
+            {
+                child.Child.Visible = !child.Child.Visible;
+            }
         }
 
         private void svernutRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             var child = SelectedChild();
-            if (child == null) return;
-            child.Child.WindowState = FormWindowState.Minimized;
+            if (child == null)
+            {
+                foreach (var children in ChildrenForms.ToList())
+                    children.Child.WindowState = FormWindowState.Minimized;
+            }
+            else 
+            {
+                child.Child.WindowState = FormWindowState.Minimized;
+            }
         }
 
         private void razvernutaRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             var child = SelectedChild();
-            if (child == null) return;
-            child.Child.WindowState = FormWindowState.Maximized;
+            if (child == null)
+            {
+                foreach (var children in ChildrenForms.ToList())
+                    children.Child.WindowState = FormWindowState.Maximized;
+            }
+            else
+            {
+                child.Child.WindowState = FormWindowState.Maximized;
+            }
         }
 
         private void defaultRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             var child = SelectedChild();
-            if (child == null) return;
-            child.Child.WindowState = FormWindowState.Normal;
+            if (child == null)
+            {
+                foreach (var children in ChildrenForms.ToList())
+                    children.Child.WindowState = FormWindowState.Normal;
+            }
+            else
+            {
+                child.Child.WindowState = FormWindowState.Normal;
+            }
         }
 
         private void childHeightResizeNumeric_ValueChanged(object sender, EventArgs e)
         {
             var child = SelectedChild();
-            if (child == null) return;
+            if (child == null)
+            {
+                foreach (var children in ChildrenForms.ToList())
+                    children.ReSize(children.Child.Size.Width, (int)childHeightResizeNumeric.Value);
+                return;
+            }
             child.ReSize(child.Child.Size.Width, (int)childHeightResizeNumeric.Value);
         }
 
         private void childWidthResizeNumeric_ValueChanged(object sender, EventArgs e)
         {
             var child = SelectedChild();
-            if (child == null) return;
+            if (child == null)
+            {
+                foreach (var children in ChildrenForms.ToList())
+                    children.ReSize((int)childWidthResizeNumeric.Value, children.Child.Size.Height);
+                return;
+            }
             child.ReSize((int)childWidthResizeNumeric.Value, child.Child.Size.Height);
         }
 
         private void createAboutBttn_Click(object sender, EventArgs e)
         {
             Program.AboutForm.Show();
-            aboutPanel.Enabled = true;
-        }
-
-        private void deleteAboutBttn_Click(object sender, EventArgs e)
-        {
-            Program.AboutForm.Close();
-            Program.AboutForm = new About();
-            aboutPanel.Enabled = false;
-        }
-
-        private void checkBox2_CheckedChanged(object sender, EventArgs e)
-        {
-            Program.AboutForm.Visible = !Program.AboutForm.Visible;
-        }
-
-        private void radioButton6_CheckedChanged(object sender, EventArgs e)
-        {
-            Program.AboutForm.WindowState = FormWindowState.Minimized;
-        }
-
-        private void radioButton5_CheckedChanged(object sender, EventArgs e)
-        {
-            Program.AboutForm.WindowState = FormWindowState.Maximized;
-        }
-
-        private void radioButton4_CheckedChanged(object sender, EventArgs e)
-        {
-            Program.AboutForm.WindowState = FormWindowState.Normal;
+            this.Enabled = false;
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -215,16 +235,22 @@ namespace lab_dop_sdi
 
         private void selColorForm_Click(object sender, EventArgs e)
         {
-            var child = SelectedChild();
-            if (child == null) return;
-
             colorDialog1.FullOpen = true;
             colorDialog1.Color = this.BackColor;
 
             if (colorDialog1.ShowDialog() == DialogResult.Cancel)
                 return;
 
-            child.Child.BackColor = colorDialog1.Color;
+            var child = SelectedChild();
+            if (child == null)
+            {
+                foreach (var children in ChildrenForms.ToList())
+                    children.Child.BackColor = colorDialog1.Color;
+            }
+            else
+            {
+                child.Child.BackColor = colorDialog1.Color;
+            }
         }
     }
 }
