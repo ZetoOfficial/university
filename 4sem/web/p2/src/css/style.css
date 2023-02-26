@@ -1,0 +1,45 @@
+.shapes-row {
+  display: flex; }
+  .shapes-row .square {
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+    color: white;
+    text-align: center;
+    line-height: 100px;
+    background: green; }
+  .shapes-row .circle {
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+    border-radius: 50%;
+    background: red; }
+  .shapes-row .oval {
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+    border-radius: 50%;
+    width: 150px;
+    background: blue; }
+  .shapes-row .rhombus {
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+    transform: rotate(45deg);
+    transform-origin: 50% 50%;
+    margin-right: 0;
+    animation: rotate 0.5s linear infinite;
+    background: linear-gradient(to bottom, #ff9933, #ff3399); }
+
+.picture-container {
+  display: flex; }
+  .picture-container img {
+    border: 2px solid black;
+    width: 100px;
+    height: 100px; }
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg); }
+  to {
+    transform: rotate(360deg); } }

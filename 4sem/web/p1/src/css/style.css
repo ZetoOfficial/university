@@ -1,0 +1,64 @@
+.shapes-row {
+    display: flex;
+}
+
+.square,
+.circle,
+.oval,
+.rhombus {
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+}
+
+.square {
+    text-align: center;
+    background-color: rgb(249, 108, 108);
+}
+
+.square>div {
+    margin-top: 50%;
+    transform: translateY(-50%);
+}
+
+.circle {
+    background-color: rgb(96, 195, 53);
+    border-radius: 50%;
+}
+
+.oval {
+    background-color: blue;
+    border-radius: 50%;
+    width: 150px;
+}
+
+.rhombus {
+    background-color: yellow;
+    transform: rotate(45deg);
+    transform-origin: 50% 50%;
+    margin-right: 0;
+
+    background: linear-gradient(to bottom, #ff9933, #ff3399);
+    animation: rotate 1s linear infinite;
+}
+
+.picture-container {
+    padding: 10px;
+}
+
+img {
+    border: 2px solid black;
+    width: 100px;
+    height: 100px;
+}
+
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
