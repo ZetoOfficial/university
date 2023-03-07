@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="src/css/style.css" />
+  </head>
+
+  <body>
+    <button onclick="showModal()">Модальное окно</button>
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Заголовок</h2>
+        <p>однажды эрнест хемингуэй поспорил</p>
+      </div>
+    </div>
+    <div class="counter">
+      Счетчик активных фигур:
+      <p id="counter">0</p>
+    </div>
+    <div class="buttons">
+      <p>Добавить:</p>
+      <button onclick="createObject('square')" class="add">квадратик</button>
+      <button onclick="createObject('circle')" class="add">кружочек</button>
+      <button onclick="createObject('oval')" class="add">овальчик</button>
+      <button onclick="createObject('rhombus')" class="add">ромбус</button>
+      <button onclick="clearFigures()" class="remove">очистить все</button>
+    </div>
+    <div id="shapes-row">
+      <div class="square" onclick="addFigureClick(this)"></div>
+      <div class="circle" onclick="addFigureClick(this)"></div>
+      <div class="oval" onclick="addFigureClick(this)"></div>
+      <div class="rhombus" onclick="addFigureClick(this)"></div>
+    </div>
+    <h1>1</h1>
+    <h2>2</h2>
+    <h3>2</h3>
+    <div class="picture-container">
+      <img src="src/img/pineapple.png" alt="description" />
+      <img src="src/img/banan.png" alt="description" />
+    </div>
+
+    <div class="slider-container">
+      <div class="slider-images">
+        <img src="src/img/orange.png" />
+        <img src="src/img/banan.png" />
+        <img src="src/img/pineapple.png" />
+      </div>
+      <button class="slider-back">&#8249;</button>
+      <button class="slider-forward">&#8250;</button>
+      <div class="slider-counter"></div>
+    </div>
+
+    <script src="src/js/script.js"></script>
+    <script src="src/js/modalWindow.js"></script>
+    <script src="src/js/slider.js"></script>
+  </body>
+</html>
