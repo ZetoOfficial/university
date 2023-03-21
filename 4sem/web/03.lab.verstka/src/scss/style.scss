@@ -96,6 +96,18 @@ header {
 }
 
 section {
+
+    .blocks {
+        margin: auto;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 70px;
+    }
+
+    .block {
+        margin: 0;
+    }
+
     .objects {
         margin: auto;
         display: grid;
