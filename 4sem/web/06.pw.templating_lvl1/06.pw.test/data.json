@@ -5,6 +5,9 @@
     { "title": "title2", "content": "some text2", "is_active": false },
     { "title": "title2", "content": "some text2", "is_active": false },
     { "title": "title2", "content": "some text2", "is_active": false },
+    { "title": "title2", "content": "some text2", "is_active": false },
+    { "title": "title2", "content": "some text2", "is_active": false },
+    { "title": "title2", "content": "some text2", "is_active": false },
     { "title": "title2", "content": "some text2", "is_active": false }
   ]
 }
